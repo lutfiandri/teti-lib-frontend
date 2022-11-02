@@ -1,14 +1,21 @@
 {
-  "extends": ["google", "prettier"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "extends": ["google", "prettier", "plugin:react/recommended"],
   "plugins": ["import", "prettier"],
   "parserOptions": {
     "sourceType": "module",
-    "ecmaVersion": "latest"
+    "ecmaVersion": 2022
   },
   "rules": {
     "prettier/prettier": "error",
     "no-console": "warn",
     "require-jsdoc": "off",
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off"
   }
 }
