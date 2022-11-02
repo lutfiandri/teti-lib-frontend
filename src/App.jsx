@@ -1,5 +1,7 @@
+import { DefaultLayout } from "@/components/layouts/DefaultLayout";
+
 function App() {
-  return <div>pppp</div>;
+  return <DefaultLayout>pppp</DefaultLayout>;
 }
 
 export default App;
