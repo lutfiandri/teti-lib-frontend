@@ -13,7 +13,7 @@ import { HiMagnifyingGlass } from "react-icons/hi2";
 export function Navbar() {
   return (
     <Box as="header" bg="blackAlpha.50">
-      <Container as="nav" maxW="6xl">
+      <Container as="nav" maxW="8xl">
         <HStack justifyContent="space-between" py={2}>
           <Button colorScheme="teal" variant="link">
             TETI Library
