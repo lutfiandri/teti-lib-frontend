@@ -1,7 +1,7 @@
 import { Center, Container } from "@chakra-ui/react";
 import Helmet from "react-helmet";
 
-export function SignInLayout({ children, title = "Sign In - Teti Library" }) {
+export function SignInLayout({ children, title = "Sign In - TETI Library" }) {
   return (
     <>
       <Helmet>

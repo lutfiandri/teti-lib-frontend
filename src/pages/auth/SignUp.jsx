@@ -21,7 +21,7 @@ export function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   return (
-    <SignInLayout title="Sign Up - Teti Library">
+    <SignInLayout title="Sign Up - TETI Library">
       <Text as="h1" fontSize="3xl" fontWeight="bold">
         Sign Up
       </Text>

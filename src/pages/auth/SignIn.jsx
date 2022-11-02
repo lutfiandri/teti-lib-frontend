@@ -11,7 +11,7 @@ export function SignIn() {
   const [password, setPassword] = useState("");
 
   return (
-    <SignInLayout title="Sign In - Teti Library">
+    <SignInLayout title="Sign In - TETI Library">
       <Text as="h1" fontSize="3xl" fontWeight="bold">
         Sign In
       </Text>
