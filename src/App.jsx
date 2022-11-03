@@ -10,9 +10,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/admin/book" element={<SeeBooks />} />
-        <Route path="/admin/book/create" element={<CreateBook />} />
-        <Route path="/admin/book/edit" element={<EditBook />} />
+        <Route path="/admin/books" element={<SeeBooks />} />
+        <Route path="/admin/books/create" element={<CreateBook />} />
+        <Route path="/admin/books/edit" element={<EditBook />} />
         <Route path="*" element={<div>404</div>} />
       </Routes>
     </BrowserRouter>
