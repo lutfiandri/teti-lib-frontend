@@ -18,6 +18,7 @@ import {
     ModalBody,
     ModalCloseButton,
     CircularProgress,
+    useToast,
 } from "@chakra-ui/react";
 
 import React from "react";
@@ -26,7 +27,7 @@ import React from "react";
 export function Home() {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
-
+    const toast = useToast()
 
     return (
         < DefaultLayout >
@@ -81,7 +82,17 @@ export function Home() {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme='teal' mr={3}>
+                        <Button colorScheme='teal' mr={3}
+                            onClick={() =>
+                                toast({
+                                    title: 'Borrowed',
+                                    description: "Book saved into My library.",
+                                    status: 'success',
+                                    duration: 9000,
+                                    isClosable: true,
+                                })
+                            }
+                        >
                             Borrow
                         </Button>
                         <Button isDisabled colorScheme='teal'>
