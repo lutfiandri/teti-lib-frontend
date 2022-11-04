@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Visual Studio 2015/2017 cache/options directory
+.vs/
+*.vsidx

@@ -1,8 +1,15 @@
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
 import {
-    Box, Container, SimpleGrid, Grid, GridItem, Image, Text,
+    ChakraProvider,
+    Box,
+    Container,
+    SimpleGrid,
+    Grid,
+    GridItem,
+    Image,
+    Text,
+    Button,
     useDisclosure,
-    useConst,
     Modal,
     ModalOverlay,
     ModalContent,
@@ -10,10 +17,16 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
+    CircularProgress,
 } from "@chakra-ui/react";
 
+import React from "react";
+
+
 export function Home() {
-    //const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
 
     return (
         < DefaultLayout >
@@ -22,153 +35,66 @@ export function Home() {
 
                 <SimpleGrid minChildWidth='236px' spacing={5}>
 
-                    <Box borderRadius='10' bg='white' width='236px' height='391px' >
+                    <Box onClick={onOpen} cursor='pointer' borderRadius='10' bg='white' width='236px' height='391px' >
                         <Box borderRadius='10' bg='lightgray' w='190px' h='249px' m={6}>
                             <image></image>
                         </Box>
                         <Box bg='white' w='190px' h='40px' m={6}>
                             <Text>
-                                BOOK TITLE
+                                BOOK TITLE BOOK TITLE BOOK TITLE
                             </Text>
                             <Text fontSize='12'>
-                                AUTHOR
+                                AUTHOR AUTHOR AUTHOR
                             </Text>
                         </Box>
                     </Box>
 
-                    <Box borderRadius='10' bg='white' width='236px' height='391px' >
-                        <Box borderRadius='10' bg='lightgray' w='190px' h='249px' m={6}>
-                            <image></image>
-                        </Box>
-                        <Box bg='white' w='190px' h='40px' m={6}>
-                            <Text>
-                                BOOK TITLE
-                            </Text>
-                            <Text fontSize='12'>
-                                AUTHOR
-                            </Text>
-                        </Box>
-                    </Box>
-
-                    <Box borderRadius='10' bg='white' width='236px' height='391px' >
-                        <Box borderRadius='10' bg='lightgray' w='190px' h='249px' m={6}>
-                            <image></image>
-                        </Box>
-                        <Box bg='white' w='190px' h='40px' m={6}>
-                            <Text>
-                                BOOK TITLE
-                            </Text>
-                            <Text fontSize='12'>
-                                AUTHOR
-                            </Text>
-                        </Box>
-                    </Box>
-
-                    <Box borderRadius='10' bg='white' width='236px' height='391px' >
-                        <Box borderRadius='10' bg='lightgray' w='190px' h='249px' m={6}>
-                            <image></image>
-                        </Box>
-                        <Box bg='white' w='190px' h='40px' m={6}>
-                            <Text>
-                                BOOK TITLE
-                            </Text>
-                            <Text fontSize='12'>
-                                AUTHOR
-                            </Text>
-                        </Box>
-                    </Box>
-
-                    <Box borderRadius='10' bg='white' width='236px' height='391px' >
-                        <Box borderRadius='10' bg='lightgray' w='190px' h='249px' m={6}>
-                            <image></image>
-                        </Box>
-                        <Box bg='white' w='190px' h='40px' m={6}>
-                            <Text>
-                                BOOK TITLE
-                            </Text>
-                            <Text fontSize='12'>
-                                AUTHOR
-                            </Text>
-                        </Box>
-                    </Box>
-
-                    <Box borderRadius='10' bg='white' width='236px' height='391px' >
-                        <Box borderRadius='10' bg='lightgray' w='190px' h='249px' m={6}>
-                            <image></image>
-                        </Box>
-                        <Box bg='white' w='190px' h='40px' m={6}>
-                            <Text>
-                                BOOK TITLE
-                            </Text>
-                            <Text fontSize='12'>
-                                AUTHOR
-                            </Text>
-                        </Box>
-                    </Box>
-
-                    <Box borderRadius='10' bg='white' width='236px' height='391px' >
-                        <Box borderRadius='10' bg='lightgray' w='190px' h='249px' m={6}>
-                            <image></image>
-                        </Box>
-                        <Box bg='white' w='190px' h='40px' m={6}>
-                            <Text>
-                                BOOK TITLE
-                            </Text>
-                            <Text fontSize='12'>
-                                AUTHOR
-                            </Text>
-                        </Box>
-                    </Box>
-
-                    <Box borderRadius='10' bg='white' width='236px' height='391px' >
-                        <Box borderRadius='10' bg='lightgray' w='190px' h='249px' m={6}>
-                            <image></image>
-                        </Box>
-                        <Box bg='white' w='190px' h='40px' m={6}>
-                            <Text>
-                                BOOK TITLE
-                            </Text>
-                            <Text fontSize='12'>
-                                AUTHOR
-                            </Text>
-                        </Box>
-                    </Box>
-
-                    <Box borderRadius='10' bg='white' width='236px' height='391px' >
-                        <Box borderRadius='10' bg='lightgray' w='190px' h='249px' m={6}>
-                            <image></image>
-                        </Box>
-                        <Box bg='white' w='190px' h='40px' m={6}>
-                            <Text>
-                                BOOK TITLE
-                            </Text>
-                            <Text fontSize='12'>
-                                AUTHOR
-                            </Text>
-                        </Box>
-                    </Box>
-
-                    <Box borderRadius='10' bg='white' width='236px' height='391px' >
-                        <Box borderRadius='10' bg='lightgray' w='190px' h='249px' m={6}>
-                            <image></image>
-                        </Box>
-                        <Box bg='white' w='190px' h='40px' m={6}>
-                            <Text>
-                                BOOK TITLE
-                            </Text>
-                            <Text fontSize='12'>
-                                AUTHOR
-                            </Text>
-                        </Box>
-                    </Box>
-
-                   
                 </SimpleGrid>
 
             </Box>
+
+            <Modal isOpen={isOpen} onClose={onClose} isCentered scrollBehavior='inside'>
+                <ModalOverlay></ModalOverlay>
+                <ModalContent>
+                    <ModalHeader> Book Details </ModalHeader>
+                    <ModalCloseButton></ModalCloseButton>
+                    <ModalBody>
+                        <Box borderRadius='10' bg='lightgray' h='473px' m={5 } >
+                            <image></image>
+                        </Box>
+                        <Text fontSize='24' marginBottom={2}>
+                            BOOK TITLE BOOK TITLE BOOK TITLE
+                        </Text>
+                        <Text marginBottom={2} fontSize='16'>
+                            by AUTHOR AUTHOR AUTHOR
+                        </Text>
+
+                        <Text fontSize='16'>
+                            BOOK SYNOPSIS Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Mauris suscipit diam in leo congue congue. Aliquam hendrerit eget purus
+                            a consequat. Fusce elit lectus, ornare vitae diam quis, cursus porta eros.
+                            Suspendisse est leo, rhoncus vel euismod nec, vulputate sed odio. Vestibulum
+                            varius purus erat, ac commodo leo hendrerit quis. Curabitur nibh dolor, euismod
+                            id nunc vitae, ornare mattis massa. Nulla facilisi.
+                        </Text>
+            
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button colorScheme='teal' mr={3}>
+                            Borrow
+                        </Button>
+                        <Button isDisabled colorScheme='teal'>
+                            Return
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+
+            </Modal>
+
         </DefaultLayout >
         
     )
+
     
 }
-

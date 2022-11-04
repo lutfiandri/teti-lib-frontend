@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/templates/Navbar";
 import { Helmet } from "react-helmet";
+import { useDisclosure } from "@chakra-ui/react";
 
 export function DefaultLayout({ children, title = "TETI Library" }) {
   return (
