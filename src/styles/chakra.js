@@ -1,3 +1,5 @@
 import { extendTheme } from "@chakra-ui/react";
 
-export const theme = extendTheme({});
+const breakpoints = ['0em', '48em']
+
+export const theme = extendTheme({breakpoints});
