@@ -30,17 +30,18 @@ export function Home() {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const toast = useToast()
 
-    const { error, isLoading, data: books} = useFetch('http://localhost:5000/books'); 
-    if(books) {
+    const { error, isLoading, data: books} = useFetch('http://localhost:5000/book'); 
+   
         return (
             < DefaultLayout >
     
                 <Box bg='orange.100' w='100%' p={5}>
     
                     <SimpleGrid minChildWidth='236px' spacing={5}>
-    
-                        
-                        {books.data.books.map((book) => (
+
+                        {error && <div>{ error }</div>}
+                        { isLoading && <div>Loading...</div> }
+                        {books && books.data.books.map((book) => (
                         <Box onClick={onOpen} cursor='pointer' borderRadius='10' bg='white' width='236px' height='391px' key={book._id}>
                             <Box borderRadius='10' bg='lightgray' w='190px' h='249px' m={6}>
                                 <image></image>
@@ -112,7 +113,7 @@ export function Home() {
             </DefaultLayout >
             
         )
-    }
+    
     
 
     
