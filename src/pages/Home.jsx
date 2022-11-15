@@ -15,11 +15,14 @@ import {
   useToast,
   Container,
   Image,
+  HStack,
+  Input,
 } from "@chakra-ui/react";
 
 import React, { useState } from "react";
 
 import useFetch from "@/useFetch";
+import FilterBook from "@/components/elements/Filterbook";
 
 export function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -42,6 +45,10 @@ export function Home() {
     <DefaultLayout>
       <Box bg="gray.100" w="100%">
         <Container maxWidth="6xl" p={5}>
+          <HStack>
+            <Input placeholder="Search" m={2} borderColor="blue.600" />
+            <FilterBook />
+          </HStack>
           <SimpleGrid columns={4} minChildWidth="250px" spacing={5}>
             {error && <div>{error}</div>}
             {isLoading && <div>Loading...</div>}
