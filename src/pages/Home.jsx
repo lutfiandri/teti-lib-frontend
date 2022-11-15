@@ -55,7 +55,7 @@ export function Home() {
             {books &&
               books.data.books.map((book) => (
                 <Box
-                  onClick={onCardClick}
+                  onClick={() => onCardClick(book)}
                   cursor="pointer"
                   bg="white"
                   width="100%"
@@ -78,10 +78,6 @@ export function Home() {
           </SimpleGrid>
         </Container>
       </Box>
-      {/* <Box bg="white" w="190px" h="40px" m={6}>
-        <Text>{book.title}</Text>
-        <Text fontSize="12">{book.author}</Text>
-      </Box> */}
 
       <Modal
         isOpen={isOpen}
@@ -94,9 +90,12 @@ export function Home() {
           <ModalHeader> Book Details </ModalHeader>
           <ModalCloseButton></ModalCloseButton>
           <ModalBody>
-            <Box borderRadius="10" bg="lightgray" h="473px" m={5}>
-              <img src={bookOpened?.imageUrl} alt="" />
-            </Box>
+            <Image
+              w="100%"
+              borderRadius="xl"
+              src={bookOpened?.imageUrl}
+              alt=""
+            />
             <Text marginTop={7} fontSize="24">
               {bookOpened?.title}
             </Text>
@@ -104,15 +103,7 @@ export function Home() {
               {bookOpened?.author} • {bookOpened?.publisher}
             </Text>
 
-            <Text fontSize="16">
-              BOOK SYNOPSIS Lorem ipsum dolor sit amet, consectetur adipiscing
-              elit. Mauris suscipit diam in leo congue congue. Aliquam hendrerit
-              eget purus a consequat. Fusce elit lectus, ornare vitae diam quis,
-              cursus porta eros. Suspendisse est leo, rhoncus vel euismod nec,
-              vulputate sed odio. Vestibulum varius purus erat, ac commodo leo
-              hendrerit quis. Curabitur nibh dolor, euismod id nunc vitae,
-              ornare mattis massa. Nulla facilisi.
-            </Text>
+            <Text fontSize="16">{bookOpened.synopsis}</Text>
           </ModalBody>
 
           <ModalFooter justifyContent="center">
