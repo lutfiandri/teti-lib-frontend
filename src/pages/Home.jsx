@@ -17,6 +17,7 @@ import {
   Image,
   HStack,
   Input,
+  Tag,
 } from "@chakra-ui/react";
 
 import React, { useState } from "react";
@@ -102,6 +103,11 @@ export function Home() {
             <Text marginBottom={2} fontSize="14" color="teal">
               {bookOpened?.author} • {bookOpened?.publisher}
             </Text>
+            <HStack mt={3} mb={1}>
+              {bookOpened?.genres?.map((genre) => (
+                <Tag size="sm"> {genre} </Tag>
+              ))}
+            </HStack>
 
             <Text fontSize="16">{bookOpened.synopsis}</Text>
           </ModalBody>
