@@ -1,6 +1,7 @@
 import { PasswordInput } from "@/components/elements/PasswordInput";
 import { SignInLayout } from "@/components/layouts/SignInLayout";
 import UserContext from "@/contexts/userContext";
+import { useRole } from "@/utils/hooks/useRole";
 import { fetcher } from "@/utils/services/fetcher";
 import {
   Box,
@@ -15,8 +16,10 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 
 export function SignIn() {
+  useRole("ADMIN");
+
   const navigate = useNavigate();
-  const { user, setUser } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,7 +35,6 @@ export function SignIn() {
 
       if (!res.status) throw new Error(res.error);
 
-      console.log(res);
       const user = res.data.data.user;
 
       setUser({
