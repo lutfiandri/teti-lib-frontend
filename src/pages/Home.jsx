@@ -25,28 +25,37 @@ import React from "react";
 
 import useFetch from "@/useFetch";
 
+import Masonry from 'react-smart-masonry';
+
 export function Home() {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
     const toast = useToast()
 
-    const { error, isLoading, data: books} = useFetch('http://localhost:5000/book'); 
+    const { error, isLoading, data: books} = useFetch('http://13.113.187.150/books'); 
    
         return (
             < DefaultLayout >
     
-                <Box bg='orange.100' w='100%' p={5}>
-    
-                    <SimpleGrid minChildWidth='236px' spacing={5}>
+                <Box bg='orange.100' w='100%'>
+
+                    <Container maxWidth='6xl' p={5}>
+
+                        <SimpleGrid columns={4} minChildWidth='250px' spacing={5}>
 
                         {error && <div>{ error }</div>}
                         { isLoading && <div>Loading...</div> }
                         {books && books.data.books.map((book) => (
-                        <Box onClick={onOpen} cursor='pointer' borderRadius='10' bg='white' width='236px' height='391px' key={book._id}>
-                            <Box borderRadius='10' bg='lightgray' w='190px' h='249px' m={6}>
-                                <image></image>
+                            <Box onClick={onOpen} cursor='pointer' bg='white' width='100%' key={book._id}>
+                            <Box w='100%' bg='red.100'>
+                                    <Image
+                                        w="100%"
+                                        objectFit='cover'
+                                        src={book?.imageUrl}
+                                        alt={book?.title}
+                                    />
                             </Box>
-                            <Box bg='white' w='190px' h='40px' m={6}>
+                            <Box w='160px' m={3}>
                                 <Text>
                                     { book.title }
                                 </Text>
@@ -58,7 +67,8 @@ export function Home() {
                     ))}
     
                     </SimpleGrid>
-    
+
+                </Container>
                 </Box>
     
                 <Modal isOpen={isOpen} onClose={onClose} isCentered scrollBehavior='inside'>
