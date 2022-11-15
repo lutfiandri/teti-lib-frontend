@@ -22,7 +22,8 @@
     "react-helmet": "^6.1.0",
     "react-icons": "^4.6.0",
     "react-router": "^6.4.3",
-    "react-router-dom": "^6.4.3"
+    "react-router-dom": "^6.4.3",
+    "react-smart-masonry": "^2.0.2"
   },
   "devDependencies": {
     "@types/react": "^18.0.22",

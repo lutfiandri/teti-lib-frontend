@@ -2733,6 +2733,11 @@
   "resolved" "https://registry.npmjs.org/react-side-effect/-/react-side-effect-2.1.2.tgz"
   "version" "2.1.2"
 
+"react-smart-masonry@^2.0.2":
+  "integrity" "sha512-Dxw9+zYZ4mZf1snLErMu/66Q6/KyWcQJwDMYnq7PK9RzLasgfd0t1Ra4VeRTQfvxT4ize2AqP4iZ9NxE0B9ynw=="
+  "resolved" "https://registry.npmjs.org/react-smart-masonry/-/react-smart-masonry-2.0.2.tgz"
+  "version" "2.0.2"
+
 "react-style-singleton@^2.2.1":
   "integrity" "sha512-ZWj0fHEMyWkHzKYUr2Bs/4zU6XLmq9HsgBURm7g5pAVfyn49DgUiNgY2d4lXRlYSiCif9YBGpQleewkcqddc7g=="
   "resolved" "https://registry.npmjs.org/react-style-singleton/-/react-style-singleton-2.2.1.tgz"
