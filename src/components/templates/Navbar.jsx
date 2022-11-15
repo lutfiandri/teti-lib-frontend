@@ -8,48 +8,54 @@ import {
   Flex,
 } from "@chakra-ui/react";
 
-import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
+import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 
 export function Navbar() {
-
-  const[display, setDisplay] = useState('none')
+  const [display, setDisplay] = useState("none");
 
   return (
     <Box as="header" bg="blackAlpha.50">
       <Container as="nav" maxW="8xl">
         <HStack justifyContent="space-between" py={2}>
-          <Button colorScheme="teal" variant="ghost">
-            <Text fontWeight="bold" pr={1}>TETI</Text>
-            <Text fontWeight="normal" pr={1}>LIBRARY</Text>
-          </Button>
-          <HStack display={['none','flex']}>
-            <Button colorScheme="teal" variant="ghost" p={4}>
-              Home
+          <div>
+            <Button colorScheme="teal" variant="link">
+              <Text fontWeight="bold" pr={1} fontSize="xl">
+                TETI
+              </Text>
+              <Text fontWeight="normal" pr={1} fontSize="xl">
+                LIBRARY
+              </Text>
             </Button>
-            <Button colorScheme="teal" variant="ghost" p={4}>
+            <Button
+              colorScheme="teal"
+              variant="link"
+              p={4}
+              display={["none", "inline-block"]}
+            >
               My Books
             </Button>
-          </HStack>
+          </div>
 
           <HStack>
-            <Button colorScheme="teal" variant="solid" p={4}>
+            <Button
+              colorScheme="teal"
+              variant="solid"
+              p={4}
+              display={["none", "flex"]}
+            >
               Sign In
-            </Button>
-            <Button colorScheme="teal" variant="solid" p={4}>
-              Sign Up
             </Button>
 
             <IconButton
-            aria-label="Open Menu"
-            colorScheme="teal"
-            size="md"
-            mr={2}
-            icon={<HamburgerIcon/>}
-            display={['flex', 'none']}
-            onClick={() => setDisplay('flex')}
+              aria-label="Open Menu"
+              colorScheme="teal"
+              size="md"
+              mr={2}
+              icon={<HamburgerIcon />}
+              display={["flex", "none"]}
+              onClick={() => setDisplay("flex")}
             />
-
           </HStack>
         </HStack>
       </Container>
@@ -73,23 +79,18 @@ export function Navbar() {
             aria-labels="Close Menu"
             size="md"
             icon={<CloseIcon />}
-            onClick={() => setDisplay('none')}
+            onClick={() => setDisplay("none")}
           />
         </Flex>
-        <Flex
-            flexDir="column"
-            align="center"
-          >
-            <Button colorScheme="teal" variant="ghost" p={4}>
-              Home
-            </Button>
-            <Button colorScheme="teal" variant="ghost" p={4}>
-              My Books
-            </Button>
+        <Flex flexDir="column" align="center">
+          <Button colorScheme="teal" variant="link" p={4}>
+            My Books
+          </Button>
+          <Button colorScheme="teal" variant="solid" p={4} mt={2}>
+            Sign In
+          </Button>
         </Flex>
-
       </Flex>
-
     </Box>
   );
 }
