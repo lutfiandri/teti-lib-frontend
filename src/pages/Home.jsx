@@ -30,7 +30,7 @@ export function Home() {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const toast = useToast()
 
-    const { error, isLoading, data: books} = useFetch('http://localhost:5000/book'); 
+    const { error, isLoading, data: books} = useFetch('http://13.113.187.150/books'); 
    
         return (
             < DefaultLayout >
