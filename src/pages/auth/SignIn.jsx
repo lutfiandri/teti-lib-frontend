@@ -1,14 +1,63 @@
 import { PasswordInput } from "@/components/elements/PasswordInput";
 import { SignInLayout } from "@/components/layouts/SignInLayout";
-import { Box, Button, Center, Input, Stack, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import UserContext from "@/contexts/userContext";
+import { useRole } from "@/utils/hooks/useRole";
+import { fetcher } from "@/utils/services/fetcher";
+import {
+  Box,
+  Button,
+  Center,
+  Input,
+  Stack,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 
 export function SignIn() {
+  useRole("USER");
+
   const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const toast = useToast();
+
+  const signInHandler = async () => {
+    try {
+      const res = await fetcher.post("/auth/signin", {
+        email: email,
+        password: password,
+      });
+
+      if (!res.status) throw new Error(res.error);
+
+      const user = res.data.data.user;
+
+      setUser({
+        id: user._id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        borrowedBookIds: user.borrowedBookIds,
+      });
+
+      localStorage.setItem("accessToken", res.data.data.accessToken);
+    } catch (error) {
+      if (error.response.status === 401) {
+        toast({
+          title: "Wrong email or password",
+          status: "error",
+          isClosable: true,
+          position: "top",
+          duration: 5000,
+        });
+      }
+    }
+  };
 
   return (
     <SignInLayout title="Sign In - TETI Library">
@@ -32,7 +81,7 @@ export function SignIn() {
           required
         />
       </Stack>
-      <Button colorScheme="blue" minW="30%">
+      <Button colorScheme="blue" minW="30%" onClick={signInHandler}>
         Sign In
       </Button>
 
