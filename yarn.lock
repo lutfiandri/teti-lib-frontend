@@ -427,12 +427,19 @@
   dependencies:
     "@chakra-ui/shared-utils" "2.0.2"
 
-"@chakra-ui/icons@^2.0.11":
-  "integrity" "sha512-WjxrFMt9hHpuZlnBh4fhtGOkIVlwYwHNmwq4sJGxYWlg8UnEhVJMoOojheJDy/d3Gp9+ApetlK3vt8fV/rZamg=="
-  "resolved" "https://registry.npmjs.org/@chakra-ui/icons/-/icons-2.0.11.tgz"
-  "version" "2.0.11"
+"@chakra-ui/icon@3.0.12":
+  "integrity" "sha512-VbUqgMcoZ26P1MtZdUqlxAKYDi1Bt8sSPNRID8QOwWfqyRYrbzabORVhKR3gpi6GaINjm7KRHIXHarj3u6EWdA=="
+  "resolved" "https://registry.npmjs.org/@chakra-ui/icon/-/icon-3.0.12.tgz"
+  "version" "3.0.12"
   dependencies:
-    "@chakra-ui/icon" "3.0.11"
+    "@chakra-ui/shared-utils" "2.0.3"
+
+"@chakra-ui/icons@^2.0.12":
+  "integrity" "sha512-lZyB96Yic5qM3gWp/QlQuD8WyS+V+19mjNxFW7IVmcn7fm+bLsnPrVPv2Qmpcs6/d4jsUyc1broyuyM+Urtg8Q=="
+  "resolved" "https://registry.npmjs.org/@chakra-ui/icons/-/icons-2.0.12.tgz"
+  "version" "2.0.12"
+  dependencies:
+    "@chakra-ui/icon" "3.0.12"
 
 "@chakra-ui/image@2.0.11":
   "integrity" "sha512-S6NqAprPcbHnck/J+2wg06r9SSol62v5A01O8Kke2PnAyjalMcS+6P59lDRO7wvPqsdxq4PPbSTZP6Dww2CvcA=="
@@ -822,6 +829,11 @@
   "integrity" "sha512-wC58Fh6wCnFFQyiebVZ0NI7PFW9+Vch0QE6qN7iR+bLseOzQY9miYuzPJ1kMYiFd6QTOmPJkI39M3wHqrPYiOg=="
   "resolved" "https://registry.npmjs.org/@chakra-ui/shared-utils/-/shared-utils-2.0.2.tgz"
   "version" "2.0.2"
+
+"@chakra-ui/shared-utils@2.0.3":
+  "integrity" "sha512-pCU+SUGdXzjAuUiUT8mriekL3tJVfNdwSTIaNeip7k/SWDzivrKGMwAFBxd3XVTDevtVusndkO4GJuQ3yILzDg=="
+  "resolved" "https://registry.npmjs.org/@chakra-ui/shared-utils/-/shared-utils-2.0.3.tgz"
+  "version" "2.0.3"
 
 "@chakra-ui/skeleton@2.0.17":
   "integrity" "sha512-dL7viXEKDEzmAJGbHMj+QbGl9PAd0VWztEcWcz5wOGfmAcJllA0lVh6NmG/yqLb6iXPCX4Y1Y0Yurm459TEYWg=="

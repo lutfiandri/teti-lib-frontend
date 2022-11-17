@@ -1,4 +1,5 @@
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
+import { Search2Icon } from "@chakra-ui/icons";
 import {
   Box,
   SimpleGrid,
@@ -17,6 +18,8 @@ import {
   Image,
   HStack,
   Input,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 
 import React, { useState } from "react";
@@ -46,7 +49,19 @@ export function Home() {
       <Box bg="gray.100" w="100%">
         <Container maxWidth="6xl" p={5}>
           <HStack>
-            <Input placeholder="Search" m={2} borderColor="blue.600" />
+            <InputGroup>
+              <Input placeholder="Search" m={2} borderColor="blue.600" />
+              <InputRightElement pointerEvents="none">
+                <Search2Icon
+                  pointerEvents="none"
+                  w={6}
+                  h={8}
+                  mt={4}
+                  mr={4}
+                  color="gray.300"
+                />
+              </InputRightElement>
+            </InputGroup>
             <FilterBook />
           </HStack>
           <SimpleGrid columns={4} minChildWidth="250px" spacing={5}>
