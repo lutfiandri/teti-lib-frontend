@@ -10,7 +10,7 @@ const BookList = ({ error, isLoading, books, onOpen, setBookOpened }) => {
       {error && <div>{error}</div>}
       {isLoading && <div>Loading...</div>}
       {books &&
-        books.data.books.map((book) => (
+        books.map((book) => (
           <Box
             onClick={() => onCardClick(book)}
             cursor="pointer"
