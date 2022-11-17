@@ -1,16 +1,24 @@
 import { Box, Image, SimpleGrid, Text } from "@chakra-ui/react";
+import { Home } from "@/pages/Home";
 
-const BookList = ({ error, isLoading, books, onOpen, setBookOpened }) => {
+const BookList = ({ error, isLoading, books, onOpen, setBookOpened, query }) => {
   const onCardClick = (book) => {
     onOpen();
     setBookOpened(book);
   };
-  return (
-    <SimpleGrid columns={4} minChildWidth="250px" spacing={5}>
+    return (
+
+        <SimpleGrid columns={{base: 1, sm: 2, md: 3, lg: 4}}  spacing={5}>
       {error && <div>{error}</div>}
       {isLoading && <div>Loading...</div>}
       {books &&
-        books.data.books.map((book) => (
+       books.data.books.filter(books => {
+           if (query === '') {
+               return books;
+           } else if (books.title.toLowerCase().includes(query.toLowerCase())) {
+               return books;
+           }
+           }).map((book) => (
           <Box
             onClick={() => onCardClick(book)}
             cursor="pointer"

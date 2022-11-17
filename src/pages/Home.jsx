@@ -24,23 +24,27 @@ export function Home() {
     error,
     isLoading,
     data: books,
-  } = useFetch("http://13.113.187.150/books");
+    } = useFetch("http://13.113.187.150/books");
+
+   const [query, setQuery] = useState("");
 
   return (
     <DefaultLayout>
       <Box bg="gray.100" w="100%">
         <Container maxWidth="6xl" p={5}>
           <HStack>
-            <Input placeholder="Search" m={2} borderColor="blue.600" />
+            <Input onChange={event => setQuery(event.target.value)} placeholder="Search" m={2} borderColor="blue.600" />placeholder="Search" m={2} borderColor="blue.600" />
             <FilterBook />
           </HStack>
+
           <BookList
             error={error}
             isLoading={isLoading}
             books={books}
             onOpen={onOpen}
+            query={query}
             setBookOpened={setBookOpened}
-          ></BookList>
+          > </BookList>
         </Container>
       </Box>
 
