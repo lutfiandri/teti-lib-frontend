@@ -1,5 +1,4 @@
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
-import { Search2Icon } from "@chakra-ui/icons";
 import {
   Box,
   SimpleGrid,
@@ -21,6 +20,7 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
+import { Search2Icon } from "@chakra-ui/icons";
 
 import React, { useState } from "react";
 
