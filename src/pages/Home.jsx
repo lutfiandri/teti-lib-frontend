@@ -53,14 +53,11 @@ export function Home() {
         </Container>
       </Box>
 
-      <Modal
+      <BookModal
         isOpen={isOpen}
         onClose={onClose}
-        isCentered
-        scrollBehavior="inside"
-      >
-        <BookModal bookOpened={bookOpened}></BookModal>
-      </Modal>
+        bookOpened={bookOpened}
+      ></BookModal>
     </DefaultLayout>
   );
 }
