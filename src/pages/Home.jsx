@@ -20,8 +20,11 @@ export function Home() {
 
   const [bookOpened, setBookOpened] = useState({});
 
-  const { error, isLoading, data: booksData } = useFetch("/books");
-  const books = useMemo(() => booksData?.data?.books || [], [booksData]);
+    const { error, isLoading, data: booksData } = useFetch("/books");
+
+    const books = useMemo(() => booksData?.data?.books || [], [booksData]);
+
+    const [query, setQuery] = useState("");
 
   return (
     <DefaultLayout>
@@ -29,7 +32,7 @@ export function Home() {
         <Container maxWidth="6xl" p={5}>
           {/* TODO: implementasi filter dan search @btari */}
           <HStack>
-            <Input onChange={event => setQuery(event.target.value)} placeholder="Search" m={2} borderColor="blue.600" />placeholder="Search" m={2} borderColor="blue.600" />
+            <Input onChange={event => setQuery(event.target.value)} placeholder="Search" m={2} borderColor="blue.600" />
             <FilterBook />
           </HStack>
 
