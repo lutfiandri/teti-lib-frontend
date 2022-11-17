@@ -20,9 +20,9 @@ import {
   Tag,
 } from "@chakra-ui/react";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
-import useFetch from "@/useFetch";
+import { useFetch } from "@/utils/hooks/useFetch";
 import FilterBook from "@/components/elements/Filterbook";
 
 export function Home() {
@@ -31,11 +31,8 @@ export function Home() {
 
   const [bookOpened, setBookOpened] = useState({});
 
-  const {
-    error,
-    isLoading,
-    data: books,
-  } = useFetch("http://13.113.187.150/books");
+  const { error, isLoading, data: booksData } = useFetch("/books");
+  const books = useMemo(() => booksData?.data?.books || [], [booksData]);
 
   const onCardClick = (book) => {
     onOpen();
@@ -46,6 +43,7 @@ export function Home() {
     <DefaultLayout>
       <Box bg="gray.100" w="100%">
         <Container maxWidth="6xl" p={5}>
+          {/* TODO: implementasi filter dan search @btari */}
           <HStack>
             <Input placeholder="Search" m={2} borderColor="blue.600" />
             <FilterBook />
@@ -54,7 +52,7 @@ export function Home() {
             {error && <div>{error}</div>}
             {isLoading && <div>Loading...</div>}
             {books &&
-              books.data.books.map((book) => (
+              books.map((book) => (
                 <Box
                   onClick={() => onCardClick(book)}
                   cursor="pointer"
@@ -80,6 +78,7 @@ export function Home() {
         </Container>
       </Box>
 
+      {/* TODO: buat komponen di file terpisah @junian  */}
       <Modal
         isOpen={isOpen}
         onClose={onClose}
@@ -105,6 +104,7 @@ export function Home() {
             </Text>
             <HStack mt={3} mb={1}>
               {bookOpened?.genres?.map((genre) => (
+                // FIXME: add key biar ngga muncul warning @junian
                 <Tag size="sm"> {genre} </Tag>
               ))}
             </HStack>
@@ -113,6 +113,7 @@ export function Home() {
           </ModalBody>
 
           <ModalFooter justifyContent="center">
+            {/* TODO: fetch borrow @junian | kalo belum login tampilin pesan harus login dulu */}
             <Button
               colorScheme="teal"
               width="100%"

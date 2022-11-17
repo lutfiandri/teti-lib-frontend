@@ -1,4 +1,5 @@
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
+import { useRole } from "@/utils/hooks/useRole";
 import {
   Button,
   Checkbox,
@@ -17,6 +18,7 @@ import {
 } from "@chakra-ui/react";
 
 export function EditBook() {
+  useRole("ADMIN");
   return (
     <DefaultLayout>
       <Container maxW="8xl" py={8}>

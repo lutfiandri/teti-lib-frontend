@@ -1,5 +1,6 @@
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
 import { useFetch } from "@/utils/hooks/useFetch";
+import { useRole } from "@/utils/hooks/useRole";
 import {
   Table,
   Thead,
@@ -21,11 +22,12 @@ import { HiMagnifyingGlass, HiPlus } from "react-icons/hi2";
 import { useNavigate } from "react-router";
 
 export function SeeBooks() {
+  useRole("ADMIN");
   const navigate = useNavigate();
 
   const { data } = useFetch("/books");
 
-  const books = useMemo(() => data.books || [], [data]);
+  const books = useMemo(() => data?.data?.books || [], [data]);
 
   return (
     <DefaultLayout>
