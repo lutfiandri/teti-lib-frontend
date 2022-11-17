@@ -1,43 +1,27 @@
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
 import {
   Box,
-  SimpleGrid,
-  Text,
-  Button,
   useDisclosure,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useToast,
   Container,
-  Image,
   HStack,
   Input,
-  Tag,
 } from "@chakra-ui/react";
 
 import React, { useMemo, useState } from "react";
 
 import { useFetch } from "@/utils/hooks/useFetch";
 import FilterBook from "@/components/elements/Filterbook";
+import BookList from "@/components/elements/BookList";
+import BookModal from "@/components/elements/BookModal";
 
 export function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const toast = useToast();
 
   const [bookOpened, setBookOpened] = useState({});
 
   const { error, isLoading, data: booksData } = useFetch("/books");
   const books = useMemo(() => booksData?.data?.books || [], [booksData]);
-
-  const onCardClick = (book) => {
-    onOpen();
-    setBookOpened(book);
-  };
 
   return (
     <DefaultLayout>
@@ -48,89 +32,23 @@ export function Home() {
             <Input placeholder="Search" m={2} borderColor="blue.600" />
             <FilterBook />
           </HStack>
-          <SimpleGrid columns={4} minChildWidth="250px" spacing={5}>
-            {error && <div>{error}</div>}
-            {isLoading && <div>Loading...</div>}
-            {books &&
-              books.map((book) => (
-                <Box
-                  onClick={() => onCardClick(book)}
-                  cursor="pointer"
-                  bg="white"
-                  width="100%"
-                  key={book._id}
-                >
-                  <Box w="100%" bg="red.100">
-                    <Image
-                      w="100%"
-                      objectFit="cover"
-                      src={book?.imageUrl}
-                      alt={book?.title}
-                    />
-                  </Box>
-                  <Box w="160px" m={3}>
-                    <Text>{book.title}</Text>
-                    <Text fontSize="12">{book.author}</Text>
-                  </Box>
-                </Box>
-              ))}
-          </SimpleGrid>
+          <BookList
+            error={error}
+            isLoading={isLoading}
+            books={books}
+            onOpen={onOpen}
+            setBookOpened={setBookOpened}
+          ></BookList>
         </Container>
       </Box>
 
-      {/* TODO: buat komponen di file terpisah @junian  */}
       <Modal
         isOpen={isOpen}
         onClose={onClose}
         isCentered
         scrollBehavior="inside"
       >
-        <ModalOverlay></ModalOverlay>
-        <ModalContent>
-          <ModalHeader> Book Details </ModalHeader>
-          <ModalCloseButton></ModalCloseButton>
-          <ModalBody>
-            <Image
-              w="100%"
-              borderRadius="xl"
-              src={bookOpened?.imageUrl}
-              alt=""
-            />
-            <Text marginTop={7} fontSize="24">
-              {bookOpened?.title}
-            </Text>
-            <Text marginBottom={2} fontSize="14" color="teal">
-              {bookOpened?.author} • {bookOpened?.publisher}
-            </Text>
-            <HStack mt={3} mb={1}>
-              {bookOpened?.genres?.map((genre) => (
-                // FIXME: add key biar ngga muncul warning @junian
-                <Tag size="sm"> {genre} </Tag>
-              ))}
-            </HStack>
-
-            <Text fontSize="16">{bookOpened.synopsis}</Text>
-          </ModalBody>
-
-          <ModalFooter justifyContent="center">
-            {/* TODO: fetch borrow @junian | kalo belum login tampilin pesan harus login dulu */}
-            <Button
-              colorScheme="teal"
-              width="100%"
-              onClick={() =>
-                toast({
-                  title: "Borrowed",
-                  description: "Book saved into My library.",
-                  status: "success",
-                  duration: 9000,
-                  isClosable: true,
-                })
-              }
-            >
-              Borrow
-            </Button>
-          </ModalFooter>
-        </ModalContent>
+        <BookModal bookOpened={bookOpened}></BookModal>
       </Modal>
     </DefaultLayout>
   );
