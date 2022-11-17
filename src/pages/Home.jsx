@@ -29,16 +29,18 @@ export function Home() {
         <Container maxWidth="6xl" p={5}>
           {/* TODO: implementasi filter dan search @btari */}
           <HStack>
-            <Input placeholder="Search" m={2} borderColor="blue.600" />
+            <Input onChange={event => setQuery(event.target.value)} placeholder="Search" m={2} borderColor="blue.600" />placeholder="Search" m={2} borderColor="blue.600" />
             <FilterBook />
           </HStack>
+
           <BookList
             error={error}
             isLoading={isLoading}
             books={books}
             onOpen={onOpen}
+            query={query}
             setBookOpened={setBookOpened}
-          ></BookList>
+          > </BookList>
         </Container>
       </Box>
 
