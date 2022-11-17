@@ -32,6 +32,7 @@ const BookModal = ({ isOpen, onClose, bookOpened }) => {
             {bookOpened?.author} • {bookOpened?.publisher}
           </Text>
           <HStack mt={3} mb={1}>
+            {bookOpened?.isFiction && <Tag size="sm">Fiction</Tag>}
             {bookOpened?.genres?.map((genre, index) => (
               <Tag size="sm" key={index}>
                 {" "}
