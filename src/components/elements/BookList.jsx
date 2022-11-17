@@ -12,7 +12,7 @@ const BookList = ({ error, isLoading, books, onOpen, setBookOpened, query }) => 
       {error && <div>{error}</div>}
       {isLoading && <div>Loading...</div>}
       {books &&
-       books.data.books.filter(books => {
+       books.filter(books => {
            if (query === '') {
                return books;
            } else if (books.title.toLowerCase().includes(query.toLowerCase())) {
