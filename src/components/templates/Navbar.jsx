@@ -9,10 +9,14 @@ import {
 } from "@chakra-ui/react";
 
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
+import RenderIf from "@/components/elements/RenderIf";
+import UserContext from "@/contexts/userContext";
 
 export function Navbar() {
+  const { user, setUser } = useContext(UserContext);
+
   const [display, setDisplay] = useState("none");
   const navigate = useNavigate();
 
@@ -45,15 +49,34 @@ export function Navbar() {
           </div>
 
           <HStack>
-            <Button
-              colorScheme="teal"
-              variant="solid"
-              p={4}
-              display={{ base: "none", md: "flex" }}
-              onClick={() => navigate("/signin")}
-            >
-              Sign In
-            </Button>
+            <RenderIf when={!user}>
+              <Button
+                colorScheme="teal"
+                variant="solid"
+                p={4}
+                display={{ base: "none", md: "flex" }}
+                onClick={() => navigate("/signin")}
+              >
+                Sign In
+              </Button>
+            </RenderIf>
+
+            <RenderIf when={user}>
+              <Button
+                colorScheme="red"
+                variant="solid"
+                p={4}
+                display={{ base: "none", md: "flex" }}
+                onClick={() => {
+                  setUser(null);
+                  localStorage.setItem("accessToken", "");
+
+                  navigate("/signin");
+                }}
+              >
+                Sign Out
+              </Button>
+            </RenderIf>
 
             <IconButton
               aria-label="Open Menu"
@@ -99,15 +122,35 @@ export function Navbar() {
           >
             My Books
           </Button>
-          <Button
-            colorScheme="teal"
-            variant="solid"
-            p={4}
-            mt={2}
-            onClick={() => navigate("/signin")}
-          >
-            Sign In
-          </Button>
+
+          <RenderIf when={!user}>
+            <Button
+              colorScheme="teal"
+              variant="solid"
+              p={4}
+              mt={2}
+              onClick={() => navigate("/signin")}
+            >
+              Sign In
+            </Button>
+          </RenderIf>
+
+          <RenderIf when={user}>
+            <Button
+              colorScheme="red"
+              variant="solid"
+              p={4}
+              mt={2}
+              onClick={() => {
+                setUser(null);
+                localStorage.setItem("accessToken", "");
+
+                navigate("/signin");
+              }}
+            >
+              Sign Out
+            </Button>
+          </RenderIf>
         </Flex>
       </Flex>
     </Box>
