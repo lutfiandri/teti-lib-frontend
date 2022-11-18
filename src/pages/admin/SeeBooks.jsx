@@ -16,6 +16,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { HiMagnifyingGlass, HiPlus } from "react-icons/hi2";
@@ -26,8 +27,9 @@ export function SeeBooks() {
   const navigate = useNavigate();
 
   const { data } = useFetch("/books");
-
   const books = useMemo(() => data?.data?.books || [], [data]);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <DefaultLayout>
@@ -87,7 +89,13 @@ export function SeeBooks() {
                       <Button size="sm" colorScheme="blue">
                         Detail
                       </Button>
-                      <Button size="sm" colorScheme="green">
+                      <Button
+                        size="sm"
+                        colorScheme="green"
+                        onClick={() =>
+                          navigate("/admin/books/edit/" + book._id)
+                        }
+                      >
                         Edit
                       </Button>
                       <Button size="sm" colorScheme="red">

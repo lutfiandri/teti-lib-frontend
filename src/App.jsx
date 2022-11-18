@@ -13,7 +13,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/admin/books" element={<SeeBooks />} />
         <Route path="/admin/books/create" element={<CreateBook />} />
-        <Route path="/admin/books/edit" element={<EditBook />} />
+        <Route path="/admin/books/edit/:id" element={<EditBook />} />
         <Route path="*" element={<div>404</div>} />
         <Route path="/error" element={<ErrorPage />} />
       </Routes>
