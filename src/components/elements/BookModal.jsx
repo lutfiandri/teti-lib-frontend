@@ -1,4 +1,3 @@
-import { createFetcher } from "@/utils/services/fetcher";
 import {
   Button,
   HStack,

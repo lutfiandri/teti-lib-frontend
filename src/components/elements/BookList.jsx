@@ -1,13 +1,6 @@
 import { Box, Image, SimpleGrid, Text } from "@chakra-ui/react";
 
-const BookList = ({
-  error,
-  isLoading,
-  books,
-  onOpen,
-  setBookOpened,
-  query,
-}) => {
+const BookList = ({ error, isLoading, books, onOpen, setBookOpened }) => {
   const onCardClick = (book) => {
     onOpen();
     setBookOpened(book);
