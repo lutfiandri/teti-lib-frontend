@@ -1,5 +1,12 @@
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
-import { Box, useDisclosure, Container, HStack, Input } from "@chakra-ui/react";
+import {
+  Box,
+  useDisclosure,
+  Container,
+  HStack,
+  Input,
+  useToast,
+} from "@chakra-ui/react";
 
 import React, { useMemo, useState } from "react";
 
@@ -7,8 +14,10 @@ import { useFetch } from "@/utils/hooks/useFetch";
 import FilterBook from "@/components/elements/Filterbook";
 import BookList from "@/components/elements/BookList";
 import BookModal from "@/components/elements/BookModal";
+import { createFetcher } from "@/utils/services/fetcher";
 
 export function Home() {
+  const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [bookOpened, setBookOpened] = useState({});
@@ -32,6 +41,30 @@ export function Home() {
       return false;
     });
   }, [books]);
+
+  const borrowBookHandler = async (book) => {
+    try {
+      const fetcher = createFetcher();
+
+      const res = await fetcher.post("/borrows", { bookId: book._id });
+      toast({
+        title: "Borrowed",
+        description: "Book saved into My Books.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Error happened.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      console.error(error);
+    }
+  };
 
   return (
     <DefaultLayout>
@@ -60,6 +93,8 @@ export function Home() {
         isOpen={isOpen}
         onClose={onClose}
         bookOpened={bookOpened}
+        actionButtonText="Borrow"
+        actionButtonHandler={async () => await borrowBookHandler(bookOpened)}
       ></BookModal>
     </DefaultLayout>
   );

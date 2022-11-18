@@ -12,27 +12,15 @@ import {
   ModalOverlay,
   Tag,
   Text,
-  useToast,
 } from "@chakra-ui/react";
 
-const BookModal = ({ isOpen, onClose, bookOpened }) => {
-  const toast = useToast();
-
-  const borrowHandler = async () => {
-    try {
-      const fetcher = createFetcher();
-
-      const res = await fetcher.post("/borrows", { bookId: bookOpened._id });
-      toast({
-        title: "Borrowed",
-        description: "Book saved into My Books.",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-      });
-    } catch (error) {}
-  };
-
+const BookModal = ({
+  isOpen,
+  onClose,
+  bookOpened,
+  actionButtonText,
+  actionButtonHandler,
+}) => {
   return (
     <div>
       <Modal
@@ -70,8 +58,12 @@ const BookModal = ({ isOpen, onClose, bookOpened }) => {
           </ModalBody>
 
           <ModalFooter justifyContent="center">
-            <Button colorScheme="teal" width="100%" onClick={borrowHandler}>
-              Borrow
+            <Button
+              colorScheme="teal"
+              width="100%"
+              onClick={actionButtonHandler}
+            >
+              {actionButtonText}
             </Button>
           </ModalFooter>
         </ModalContent>

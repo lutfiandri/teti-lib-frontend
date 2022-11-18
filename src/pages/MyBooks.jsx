@@ -1,5 +1,12 @@
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
-import { Box, useDisclosure, Container, HStack, Input } from "@chakra-ui/react";
+import {
+  Box,
+  useDisclosure,
+  Container,
+  HStack,
+  Input,
+  useToast,
+} from "@chakra-ui/react";
 
 import React, { useContext, useMemo, useState } from "react";
 
@@ -9,10 +16,12 @@ import BookList from "@/components/elements/BookList";
 import BookModal from "@/components/elements/BookModal";
 import UserContext from "@/contexts/userContext";
 import { useRole } from "@/utils/hooks/useRole";
+import { createFetcher } from "@/utils/services/fetcher";
 
 export function MyBooks() {
   useRole("USER");
 
+  const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user } = useContext(UserContext);
 
@@ -23,8 +32,33 @@ export function MyBooks() {
 
   const books = useMemo(() => booksData?.data?.books || [], [booksData]);
 
+  const returnBookHandler = async (book) => {
+    try {
+      const fetcher = createFetcher();
+
+      const res = await fetcher.put("/borrows/return", { bookId: book._id });
+      toast({
+        title: "Returned",
+        description: "Book successfully returned.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      // TODO: re fetch after returning
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Error Happened",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      console.error(error);
+    }
+  };
+
   const filteredBooks = useMemo(() => {
-    console.log(books);
     return books
       .filter((book) => book.borrowerIds.includes(user.id))
       .filter((books) => {
@@ -68,6 +102,8 @@ export function MyBooks() {
         isOpen={isOpen}
         onClose={onClose}
         bookOpened={bookOpened}
+        actionButtonText="Return"
+        actionButtonHandler={async () => await returnBookHandler(bookOpened)}
       ></BookModal>
     </DefaultLayout>
   );
