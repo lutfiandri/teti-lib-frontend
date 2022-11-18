@@ -16,8 +16,6 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 
 export function SignIn() {
-  // useRole("USER");
-
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
 
@@ -46,6 +44,8 @@ export function SignIn() {
       });
 
       localStorage.setItem("accessToken", res.data.data.accessToken);
+
+      navigate(user.role === "USER" ? "/" : "/admin/books");
     } catch (error) {
       if (error.response.status === 401) {
         toast({

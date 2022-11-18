@@ -2,7 +2,10 @@ import { DefaultLayout } from "@/components/layouts/DefaultLayout";
 import { Button, Center, Box, Text, Container, Stack } from "@chakra-ui/react";
 import { useNavigate } from "react-router";
 
-export function ErrorPage() {
+export function ErrorPage({
+  statusCode = "500",
+  status = "Internal Server Error",
+}) {
   const navigate = useNavigate();
   return (
     <DefaultLayout>
@@ -16,11 +19,11 @@ export function ErrorPage() {
             borderRadius="xl"
             p={4}
           >
-            <Text as="h1" fontSize="7xl" fontWeight="bold">
-              502
+            <Text as="h1" fontSize="4xl" fontWeight="bold">
+              {statusCode}
             </Text>
-            <Text fontSize="lg" fontWeight="bold">
-              Bad Gateway
+            <Text fontSize="xl" fontWeight="bold">
+              {status}
             </Text>
             <Center mt={5} mb={5}>
               <Box
@@ -33,7 +36,7 @@ export function ErrorPage() {
               <Button
                 colorScheme="blue"
                 minW="30%"
-                onClick={() => window.history.go(-1)}
+                onClick={() => navigate(-1)}
               >
                 Back
               </Button>
@@ -41,6 +44,7 @@ export function ErrorPage() {
                 colorScheme="blue"
                 minW="30%"
                 onClick={() => navigate("/")}
+                variant="outline"
               >
                 Home
               </Button>

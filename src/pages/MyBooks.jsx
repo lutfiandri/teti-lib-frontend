@@ -8,17 +8,22 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
-import React, { useMemo, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 
 import { useFetch } from "@/utils/hooks/useFetch";
 import FilterBook from "@/components/elements/Filterbook";
 import BookList from "@/components/elements/BookList";
 import BookModal from "@/components/elements/BookModal";
+import UserContext from "@/contexts/userContext";
+import { useRole } from "@/utils/hooks/useRole";
 import { createFetcher } from "@/utils/services/fetcher";
 
-export function Home() {
+export function MyBooks() {
+  useRole("USER");
+
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { user } = useContext(UserContext);
 
   const [bookOpened, setBookOpened] = useState({});
   const [query, setQuery] = useState("");
@@ -27,37 +32,24 @@ export function Home() {
 
   const books = useMemo(() => booksData?.data?.books || [], [booksData]);
 
-  const filteredBooks = useMemo(() => {
-    return books.filter((books) => {
-      if (query === "") {
-        return true;
-      } else if (
-        books.title.toLowerCase().includes(query.toLowerCase()) ||
-        books.author.toLowerCase().includes(query.toLowerCase()) ||
-        books.publisher.toLowerCase().includes(query.toLowerCase())
-      ) {
-        return true;
-      }
-      return false;
-    });
-  }, [books]);
-
-  const borrowBookHandler = async (book) => {
+  const returnBookHandler = async (book) => {
     try {
       const fetcher = createFetcher();
 
-      const res = await fetcher.post("/borrows", { bookId: book._id });
+      const res = await fetcher.put("/borrows/return", { bookId: book._id });
       toast({
-        title: "Borrowed",
-        description: "Book saved into My Books.",
+        title: "Returned",
+        description: "Book successfully returned.",
         status: "success",
         duration: 3000,
         isClosable: true,
       });
+
+      // TODO: re fetch after returning
     } catch (error) {
       toast({
         title: "Error",
-        description: "Error happened.",
+        description: "Error Happened",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -65,6 +57,23 @@ export function Home() {
       console.error(error);
     }
   };
+
+  const filteredBooks = useMemo(() => {
+    return books
+      .filter((book) => book.borrowerIds.includes(user.id))
+      .filter((books) => {
+        if (query === "") {
+          return true;
+        } else if (
+          books.title.toLowerCase().includes(query.toLowerCase()) ||
+          books.author.toLowerCase().includes(query.toLowerCase()) ||
+          books.publisher.toLowerCase().includes(query.toLowerCase())
+        ) {
+          return true;
+        }
+        return false;
+      });
+  }, [user, books]);
 
   return (
     <DefaultLayout>
@@ -93,8 +102,8 @@ export function Home() {
         isOpen={isOpen}
         onClose={onClose}
         bookOpened={bookOpened}
-        actionButtonText="Borrow"
-        actionButtonHandler={async () => await borrowBookHandler(bookOpened)}
+        actionButtonText="Return"
+        actionButtonHandler={async () => await returnBookHandler(bookOpened)}
       ></BookModal>
     </DefaultLayout>
   );
