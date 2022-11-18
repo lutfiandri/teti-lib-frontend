@@ -1,15 +1,20 @@
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
 import { Box, useDisclosure, Container, HStack, Input } from "@chakra-ui/react";
 
-import React, { useMemo, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 
 import { useFetch } from "@/utils/hooks/useFetch";
 import FilterBook from "@/components/elements/Filterbook";
 import BookList from "@/components/elements/BookList";
 import BookModal from "@/components/elements/BookModal";
+import UserContext from "@/contexts/userContext";
+import { useRole } from "@/utils/hooks/useRole";
 
-export function Home() {
+export function MyBooks() {
+  useRole("USER");
+
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { user } = useContext(UserContext);
 
   const [bookOpened, setBookOpened] = useState({});
   const [query, setQuery] = useState("");
@@ -19,19 +24,22 @@ export function Home() {
   const books = useMemo(() => booksData?.data?.books || [], [booksData]);
 
   const filteredBooks = useMemo(() => {
-    return books.filter((books) => {
-      if (query === "") {
-        return true;
-      } else if (
-        books.title.toLowerCase().includes(query.toLowerCase()) ||
-        books.author.toLowerCase().includes(query.toLowerCase()) ||
-        books.publisher.toLowerCase().includes(query.toLowerCase())
-      ) {
-        return true;
-      }
-      return false;
-    });
-  }, [books]);
+    console.log(books);
+    return books
+      .filter((book) => book.borrowerIds.includes(user.id))
+      .filter((books) => {
+        if (query === "") {
+          return true;
+        } else if (
+          books.title.toLowerCase().includes(query.toLowerCase()) ||
+          books.author.toLowerCase().includes(query.toLowerCase()) ||
+          books.publisher.toLowerCase().includes(query.toLowerCase())
+        ) {
+          return true;
+        }
+        return false;
+      });
+  }, [user, books]);
 
   return (
     <DefaultLayout>

@@ -13,7 +13,7 @@ const BookList = ({
     setBookOpened(book);
   };
   return (
-    <>
+    <Box mt={4}>
       {error && <div>{error}</div>}
       {isLoading && <div>Loading...</div>}
 
@@ -25,6 +25,8 @@ const BookList = ({
             bg="white"
             width="100%"
             key={book._id}
+            borderRadius="lg"
+            overflow="hidden"
           >
             <Box w="100%" bg="red.100">
               <Image
@@ -36,12 +38,14 @@ const BookList = ({
             </Box>
             <Box w="160px" m={3}>
               <Text>{book.title}</Text>
-              <Text fontSize="12">{book.author}</Text>
+              <Text fontSize="12">
+                {book?.author} • {book?.publisher}
+              </Text>
             </Box>
           </Box>
         ))}
       </SimpleGrid>
-    </>
+    </Box>
   );
 };
 

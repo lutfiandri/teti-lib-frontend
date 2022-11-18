@@ -1,3 +1,4 @@
+import { createFetcher } from "@/utils/services/fetcher";
 import {
   Button,
   HStack,
@@ -16,6 +17,21 @@ import {
 
 const BookModal = ({ isOpen, onClose, bookOpened }) => {
   const toast = useToast();
+
+  const borrowHandler = async () => {
+    try {
+      const fetcher = createFetcher();
+
+      const res = await fetcher.post("/borrows", { bookId: bookOpened._id });
+      toast({
+        title: "Borrowed",
+        description: "Book saved into My Books.",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+    } catch (error) {}
+  };
 
   return (
     <div>
@@ -54,19 +70,7 @@ const BookModal = ({ isOpen, onClose, bookOpened }) => {
           </ModalBody>
 
           <ModalFooter justifyContent="center">
-            <Button
-              colorScheme="teal"
-              width="100%"
-              onClick={() =>
-                toast({
-                  title: "Borrowed",
-                  description: "Book saved into My library.",
-                  status: "success",
-                  duration: 9000,
-                  isClosable: true,
-                })
-              }
-            >
+            <Button colorScheme="teal" width="100%" onClick={borrowHandler}>
               Borrow
             </Button>
           </ModalFooter>
