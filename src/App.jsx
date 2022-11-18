@@ -15,8 +15,10 @@ function App() {
         <Route path="/admin/books" element={<SeeBooks />} />
         <Route path="/admin/books/create" element={<CreateBook />} />
         <Route path="/admin/books/edit/:id" element={<EditBook />} />
-        <Route path="*" element={<div>404</div>} />
-        <Route path="/error" element={<ErrorPage />} />
+        <Route
+          path="*"
+          element={<ErrorPage status="404" statusCode="Page Not Found" />}
+        />
       </Routes>
     </BrowserRouter>
   );

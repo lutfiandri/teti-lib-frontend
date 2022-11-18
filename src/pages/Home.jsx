@@ -12,12 +12,26 @@ export function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [bookOpened, setBookOpened] = useState({});
+  const [query, setQuery] = useState("");
 
   const { error, isLoading, data: booksData } = useFetch("/books");
 
   const books = useMemo(() => booksData?.data?.books || [], [booksData]);
 
-  const [query, setQuery] = useState("");
+  const filteredBooks = useMemo(() => {
+    return books.filter((books) => {
+      if (query === "") {
+        return true;
+      } else if (
+        books.title.toLowerCase().includes(query.toLowerCase()) ||
+        books.author.toLowerCase().includes(query.toLowerCase()) ||
+        books.publisher.toLowerCase().includes(query.toLowerCase())
+      ) {
+        return true;
+      }
+      return false;
+    });
+  });
 
   return (
     <DefaultLayout>
@@ -35,9 +49,8 @@ export function Home() {
           <BookList
             error={error}
             isLoading={isLoading}
-            books={books}
+            books={filteredBooks}
             onOpen={onOpen}
-            query={query}
             setBookOpened={setBookOpened}
           >
             {" "}
