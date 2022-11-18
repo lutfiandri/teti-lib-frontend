@@ -1,12 +1,5 @@
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
-import {
-  Box,
-  useDisclosure,
-  Modal,
-  Container,
-  HStack,
-  Input,
-} from "@chakra-ui/react";
+import { Box, useDisclosure, Container, HStack, Input } from "@chakra-ui/react";
 
 import React, { useMemo, useState } from "react";
 
@@ -39,7 +32,6 @@ export function Home() {
             />
             <FilterBook />
           </HStack>
-
           <BookList
             error={error}
             isLoading={isLoading}
@@ -52,19 +44,11 @@ export function Home() {
           </BookList>
         </Container>
       </Box>
-
-      <Modal
+      <BookModal
         isOpen={isOpen}
         onClose={onClose}
-        isCentered
-        scrollBehavior="inside"
-      >
-        <BookModal
-          bookOpened={bookOpened}
-          isOpen={isOpen}
-          onClose={onClose}
-        ></BookModal>
-      </Modal>
+        bookOpened={bookOpened}
+      ></BookModal>
     </DefaultLayout>
   );
 }

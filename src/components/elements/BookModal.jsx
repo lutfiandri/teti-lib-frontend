@@ -2,6 +2,7 @@ import {
   Button,
   HStack,
   Image,
+  Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
@@ -13,7 +14,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
-const BookModal = (bookOpened) => {
+const BookModal = ({ isOpen, onClose, bookOpened }) => {
   const toast = useToast();
 
   return (
@@ -32,25 +33,24 @@ const BookModal = (bookOpened) => {
             <Image
               w="100%"
               borderRadius="xl"
-              src={bookOpened?.bookOpened?.imageUrl}
+              src={bookOpened?.imageUrl}
               alt=""
             />
             <Text marginTop={7} fontSize="24">
-              {bookOpened?.bookOpened?.title}
+              {bookOpened?.title}
             </Text>
             <Text marginBottom={2} fontSize="14" color="teal">
-              {bookOpened?.bookOpened?.author} •{" "}
-              {bookOpened?.bookOpened?.publisher}
+              {bookOpened?.author} • {bookOpened?.publisher}
             </Text>
             <HStack mt={3} mb={1}>
-              {bookOpened?.bookOpened?.genres?.map((genre, index) => (
+              {bookOpened?.genres?.map((genre, index) => (
                 <Tag size="sm" key={index}>
                   {genre}
                 </Tag>
               ))}
             </HStack>
 
-            <Text fontSize="16">{bookOpened?.bookOpened?.synopsis}</Text>
+            <Text fontSize="16">{bookOpened?.synopsis}</Text>
           </ModalBody>
 
           <ModalFooter justifyContent="center">

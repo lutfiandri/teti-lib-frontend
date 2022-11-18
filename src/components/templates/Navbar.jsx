@@ -10,16 +10,22 @@ import {
 
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 export function Navbar() {
   const [display, setDisplay] = useState("none");
+  const navigate = useNavigate();
 
   return (
     <Box as="header" bg="blackAlpha.50">
       <Container as="nav" maxW="8xl">
         <HStack justifyContent="space-between" py={2}>
           <div>
-            <Button colorScheme="teal" variant="link">
+            <Button
+              colorScheme="teal"
+              variant="link"
+              onClick={() => navigate("/")}
+            >
               <Text fontWeight="bold" pr={1} fontSize="xl">
                 TETI
               </Text>
@@ -31,7 +37,8 @@ export function Navbar() {
               colorScheme="teal"
               variant="link"
               p={4}
-              display={["none", "inline-block"]}
+              display={{ base: "none", md: "inline-block" }}
+              onClick={() => navigate("/my/books")}
             >
               My Books
             </Button>
@@ -42,7 +49,8 @@ export function Navbar() {
               colorScheme="teal"
               variant="solid"
               p={4}
-              display={["none", "flex"]}
+              display={{ base: "none", md: "flex" }}
+              onClick={() => navigate("/signin")}
             >
               Sign In
             </Button>
@@ -53,7 +61,7 @@ export function Navbar() {
               size="md"
               mr={2}
               icon={<HamburgerIcon />}
-              display={["flex", "none"]}
+              display={{ base: "flex", md: "none" }}
               onClick={() => setDisplay("flex")}
             />
           </HStack>
@@ -74,8 +82,8 @@ export function Navbar() {
       >
         <Flex justify="flex-end">
           <IconButton
-            mt={4}
-            mr={4}
+            mt={2}
+            mr={8}
             aria-labels="Close Menu"
             size="md"
             icon={<CloseIcon />}
@@ -83,10 +91,21 @@ export function Navbar() {
           />
         </Flex>
         <Flex flexDir="column" align="center">
-          <Button colorScheme="teal" variant="link" p={4}>
+          <Button
+            colorScheme="teal"
+            variant="link"
+            p={4}
+            onClick={() => navigate("/my/books")}
+          >
             My Books
           </Button>
-          <Button colorScheme="teal" variant="solid" p={4} mt={2}>
+          <Button
+            colorScheme="teal"
+            variant="solid"
+            p={4}
+            mt={2}
+            onClick={() => navigate("/signin")}
+          >
             Sign In
           </Button>
         </Flex>
