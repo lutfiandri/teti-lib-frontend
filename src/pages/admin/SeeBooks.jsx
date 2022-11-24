@@ -1,4 +1,5 @@
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
+import { BookFormModal } from "@/components/templates/BookFormModal";
 import { useFetch } from "@/utils/hooks/useFetch";
 import { useRole } from "@/utils/hooks/useRole";
 import {
@@ -29,7 +30,11 @@ export function SeeBooks() {
   const { data } = useFetch("/books");
   const books = useMemo(() => data?.data?.books || [], [data]);
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isAddBookOpen,
+    onOpen: onAddBookOpen,
+    onClose: onAddBookClose,
+  } = useDisclosure();
 
   return (
     <DefaultLayout>
@@ -50,7 +55,7 @@ export function SeeBooks() {
               colorScheme="blue"
               variant="solid"
               px={8}
-              onClick={() => navigate("/admin/books/create")}
+              onClick={onAddBookOpen}
             >
               Add Book
             </Button>
@@ -67,7 +72,6 @@ export function SeeBooks() {
             <Thead>
               <Tr>
                 <Th>Title</Th>
-                <Th>ISBN</Th>
                 <Th>Author</Th>
                 <Th>Publisher</Th>
                 <Th>Books Available</Th>
@@ -78,7 +82,6 @@ export function SeeBooks() {
               {books.map((book) => (
                 <Tr key={book._id}>
                   <Td>{book.title}</Td>
-                  <Td>{book.isbn}</Td>
                   <Td>{book.author}</Td>
                   <Td>{book.publisher}</Td>
                   <Td>
@@ -109,6 +112,8 @@ export function SeeBooks() {
           </Table>
         </TableContainer>
       </Container>
+
+      <BookFormModal isOpen={isAddBookOpen} onClose={onAddBookClose} />
     </DefaultLayout>
   );
 }
