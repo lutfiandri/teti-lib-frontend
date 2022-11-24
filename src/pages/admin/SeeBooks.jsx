@@ -19,7 +19,7 @@ import {
   InputLeftElement,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { HiMagnifyingGlass, HiPlus } from "react-icons/hi2";
 import { useNavigate } from "react-router";
 
@@ -27,7 +27,9 @@ export function SeeBooks() {
   useRole("ADMIN");
   const navigate = useNavigate();
 
-  const { data } = useFetch("/books");
+  const [refreshSignal, setRefreshSignal] = useState(false);
+
+  const { data } = useFetch("/books", refreshSignal);
   const books = useMemo(() => data?.data?.books || [], [data]);
 
   const {
@@ -113,7 +115,11 @@ export function SeeBooks() {
         </TableContainer>
       </Container>
 
-      <BookFormModal isOpen={isAddBookOpen} onClose={onAddBookClose} />
+      <BookFormModal
+        isOpen={isAddBookOpen}
+        onClose={onAddBookClose}
+        setRefreshSignal={setRefreshSignal}
+      />
     </DefaultLayout>
   );
 }

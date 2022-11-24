@@ -26,7 +26,7 @@ import {
 import { ImageUpload } from "../elements/ImageUpload";
 import { createFetcher } from "@/utils/services/fetcher";
 
-export function BookFormModal({ isOpen, onClose }) {
+export function BookFormModal({ isOpen, onClose, setRefreshSignal }) {
   const formRef = useRef();
   const toast = useToast();
 
@@ -85,6 +85,8 @@ export function BookFormModal({ isOpen, onClose }) {
         duration: 5000,
         isClosable: true,
       });
+
+      setRefreshSignal((s) => !s);
 
       onClose();
     } catch (error) {
