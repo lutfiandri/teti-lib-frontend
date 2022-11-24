@@ -5,19 +5,25 @@ import { RenderIf } from "./RenderIf";
 import { useFileUpload } from "use-file-upload";
 import { uploadImage } from "@/utils/services/imagekit/uploadImage";
 
-export function ImageUpload({ setIsImageLoading, setImageUrl }) {
+export function ImageUpload({
+  setIsImageLoading,
+  setImageUrl,
+  initialImageUrl,
+}) {
   const [_, selectImage] = useFileUpload();
   const [image, setImage] = useState(null);
+  const [url, setUrl] = useState(initialImageUrl);
 
   const removeImageHandler = () => {
     setImage(null);
     setImageUrl(null);
     setIsImageLoading(true);
+    setUrl(null);
   };
 
   return (
     <VStack justifyContent="center" w="full" h="full">
-      <RenderIf when={!image}>
+      <RenderIf when={!url}>
         <Center
           border={1}
           borderStyle="dashed"
@@ -32,6 +38,7 @@ export function ImageUpload({ setIsImageLoading, setImageUrl }) {
             setIsImageLoading(true);
             selectImage({ accept: "image/*" }, (image) => {
               setImage(image);
+              setUrl(image.source);
               uploadImage(image.file).then((url) => {
                 setImageUrl(url);
                 console.log("image uploaded with url:", url);
@@ -43,15 +50,15 @@ export function ImageUpload({ setIsImageLoading, setImageUrl }) {
           <VStack spacing={-2}>
             <HiOutlinePhoto style={{ height: "120px", width: "100%" }} />
             <Text>
-              Click to <strong>Select Image</strong>
+              Click to <strong>Select Image</strong> {url}
             </Text>
           </VStack>
         </Center>
       </RenderIf>
 
-      <RenderIf when={image}>
+      <RenderIf when={url}>
         <Image
-          src={image?.source}
+          src={url}
           rounded="md"
           border={1}
           borderStyle="solid"

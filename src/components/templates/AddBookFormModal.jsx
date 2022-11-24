@@ -7,13 +7,8 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
-  VStack,
   Stack,
   Center,
-  Image,
-  Text,
-  Box,
-  useNumberInput,
   useToast,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
@@ -26,7 +21,7 @@ import {
 import { ImageUpload } from "../elements/ImageUpload";
 import { createFetcher } from "@/utils/services/fetcher";
 
-export function BookFormModal({ isOpen, onClose, setRefreshSignal }) {
+export function AddBookFormModal({ isOpen, onClose, setRefreshSignal }) {
   const formRef = useRef();
   const toast = useToast();
 

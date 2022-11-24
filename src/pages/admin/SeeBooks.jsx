@@ -1,5 +1,6 @@
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
-import { BookFormModal } from "@/components/templates/BookFormModal";
+import { AddBookFormModal } from "@/components/templates/AddBookFormModal";
+import { EditBookFormModal } from "@/components/templates/EditBookFormModal";
 import { useFetch } from "@/utils/hooks/useFetch";
 import { useRole } from "@/utils/hooks/useRole";
 import {
@@ -32,10 +33,18 @@ export function SeeBooks() {
   const { data } = useFetch("/books", refreshSignal);
   const books = useMemo(() => data?.data?.books || [], [data]);
 
+  const [selectedBook, setSelectedBook] = useState();
+
   const {
     isOpen: isAddBookOpen,
     onOpen: onAddBookOpen,
     onClose: onAddBookClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isEditBookOpen,
+    onOpen: onEditBookOpen,
+    onClose: onEditBookClose,
   } = useDisclosure();
 
   return (
@@ -97,9 +106,10 @@ export function SeeBooks() {
                       <Button
                         size="sm"
                         colorScheme="green"
-                        onClick={() =>
-                          navigate("/admin/books/edit/" + book._id)
-                        }
+                        onClick={() => {
+                          onEditBookOpen();
+                          setSelectedBook(book);
+                        }}
                       >
                         Edit
                       </Button>
@@ -115,10 +125,17 @@ export function SeeBooks() {
         </TableContainer>
       </Container>
 
-      <BookFormModal
+      <AddBookFormModal
         isOpen={isAddBookOpen}
         onClose={onAddBookClose}
         setRefreshSignal={setRefreshSignal}
+      />
+
+      <EditBookFormModal
+        isOpen={isEditBookOpen}
+        onClose={onEditBookClose}
+        setRefreshSignal={setRefreshSignal}
+        initialBook={selectedBook}
       />
     </DefaultLayout>
   );
