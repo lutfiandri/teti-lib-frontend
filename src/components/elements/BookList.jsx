@@ -1,4 +1,6 @@
 import { Box, Image, SimpleGrid, Text } from "@chakra-ui/react";
+import styles from "@/styles/transition.module.css";
+import clsx from "clsx";
 
 const BookList = ({ error, isLoading, books, onOpen, setBookOpened }) => {
   const onCardClick = (book) => {
@@ -20,6 +22,7 @@ const BookList = ({ error, isLoading, books, onOpen, setBookOpened }) => {
             key={book._id}
             borderRadius="lg"
             overflow="hidden"
+            className={clsx(styles["animate-up-on-hover"])}
           >
             <Box w="100%" bg="red.100">
               <Image
@@ -29,7 +32,7 @@ const BookList = ({ error, isLoading, books, onOpen, setBookOpened }) => {
                 alt={book?.title}
               />
             </Box>
-            <Box w="160px" m={3}>
+            <Box m={3}>
               <Text>{book.title}</Text>
               <Text fontSize="12">
                 {book?.author} • {book?.publisher}

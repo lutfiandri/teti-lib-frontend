@@ -69,7 +69,7 @@ export function Home() {
   return (
     <DefaultLayout>
       <Box bg="gray.100" w="100%">
-        <Container maxWidth="6xl" p={5}>
+        <Container maxWidth="8xl" py={5}>
           <HStack>
             <Input
               onChange={(event) => setQuery(event.target.value)}

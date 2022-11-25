@@ -1,0 +1,7 @@
+.animate-up-on-hover {
+  transition: all 150ms ease-in;
+}
+
+.animate-up-on-hover:hover {
+  transform: translateY(-6px);
+}
