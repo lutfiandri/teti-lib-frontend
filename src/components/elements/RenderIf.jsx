@@ -1,4 +1,4 @@
-export default function RenderIf({ when, children }) {
-  if (when) return <>{children}</>;
-  return <></>;
+export function RenderIf({ when, children }) {
+  if (!when) return <></>;
+  return <>{children}</>;
 }

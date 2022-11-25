@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { createFetcher } from "@/utils/services/fetcher";
 
-export const useFetch = (endpoint) => {
+export const useFetch = (endpoint, refreshSignal) => {
   const [data, setData] = useState([]);
   const [error, setError] = useState();
 
@@ -16,7 +16,7 @@ export const useFetch = (endpoint) => {
         setError(error);
       }
     })();
-  }, []);
+  }, [refreshSignal]);
 
   return { data, error, isLoading: !data && !error };
 };

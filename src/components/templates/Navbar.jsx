@@ -11,7 +11,7 @@ import {
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
-import RenderIf from "@/components/elements/RenderIf";
+import { RenderIf } from "@/components/elements/RenderIf";
 import UserContext from "@/contexts/userContext";
 
 export function Navbar() {
