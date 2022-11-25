@@ -23,7 +23,7 @@ export const BaseInput = ({ title, children }) => {
 export const TextInput = ({ title, name, placeholder, value }) => {
   return (
     <BaseInput title={title}>
-      <Input name={name} placeholder={placeholder} value={value} />
+      <Input name={name} placeholder={placeholder} defaultValue={value} />
     </BaseInput>
   );
 };
@@ -34,7 +34,7 @@ export const TextAreaInput = ({ title, name, placeholder, value }) => {
       <Textarea
         name={name}
         placeholder={placeholder}
-        value={value}
+        defaultValue={value}
         noOfLines={5}
       />
     </BaseInput>
@@ -44,13 +44,7 @@ export const TextAreaInput = ({ title, name, placeholder, value }) => {
 export const DecimalNumberInput = ({ title, name, placeholder, value }) => {
   return (
     <BaseInput title={title}>
-      <NumberInput
-        defaultValue={1}
-        min={1}
-        precision={0}
-        w="full"
-        value={value}
-      >
+      <NumberInput defaultValue={value || 1} min={1} precision={0} w="full">
         <NumberInputField borderLeftRadius={0} name={name} />
         <NumberInputStepper>
           <NumberIncrementStepper />

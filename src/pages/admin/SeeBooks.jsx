@@ -1,8 +1,10 @@
+import ConfirmDialog from "@/components/elements/ConfirmDialog";
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
 import { AddBookFormModal } from "@/components/templates/AddBookFormModal";
 import { EditBookFormModal } from "@/components/templates/EditBookFormModal";
 import { useFetch } from "@/utils/hooks/useFetch";
 import { useRole } from "@/utils/hooks/useRole";
+import { createFetcher } from "@/utils/services/fetcher";
 import {
   Table,
   Thead,
@@ -19,6 +21,7 @@ import {
   InputGroup,
   InputLeftElement,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import { HiMagnifyingGlass, HiPlus } from "react-icons/hi2";
@@ -26,7 +29,7 @@ import { useNavigate } from "react-router";
 
 export function SeeBooks() {
   useRole("ADMIN");
-  const navigate = useNavigate();
+  const toast = useToast();
 
   const [refreshSignal, setRefreshSignal] = useState(false);
 
@@ -45,6 +48,12 @@ export function SeeBooks() {
     isOpen: isEditBookOpen,
     onOpen: onEditBookOpen,
     onClose: onEditBookClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isDeleteBookOpen,
+    onOpen: onDeleteBookOpen,
+    onClose: onDeleteBookClose,
   } = useDisclosure();
 
   return (
@@ -113,7 +122,14 @@ export function SeeBooks() {
                       >
                         Edit
                       </Button>
-                      <Button size="sm" colorScheme="red">
+                      <Button
+                        size="sm"
+                        colorScheme="red"
+                        onClick={() => {
+                          onDeleteBookOpen();
+                          setSelectedBook(book);
+                        }}
+                      >
                         Delete
                       </Button>
                     </HStack>
@@ -136,6 +152,30 @@ export function SeeBooks() {
         onClose={onEditBookClose}
         setRefreshSignal={setRefreshSignal}
         initialBook={selectedBook}
+      />
+
+      <ConfirmDialog
+        title="Warning"
+        subtitle={`Remove ${selectedBook?.title}?`}
+        actionButtonText="Delete"
+        isOpen={isDeleteBookOpen}
+        onClose={onDeleteBookClose}
+        onActionClick={async () => {
+          try {
+            const fetcher = createFetcher();
+            await fetcher.delete("/books/" + selectedBook._id);
+            setRefreshSignal((s) => !s);
+            toast({
+              title: "Success",
+              description: `${selectedBook.title} deleted`,
+              status: "success",
+              duration: 3000,
+              isClosable: false,
+            });
+          } catch (error) {
+            console.error("Error when deleting", error);
+          }
+        }}
       />
     </DefaultLayout>
   );

@@ -30,7 +30,7 @@ export function EditBookFormModal({
   const formRef = useRef();
   const toast = useToast();
 
-  const [imageUrl, setImageUrl] = useState(null);
+  const [imageUrl, setImageUrl] = useState(initialBook?.imageUrl);
   const [isImageLoading, setIsImageLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
