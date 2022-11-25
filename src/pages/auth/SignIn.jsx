@@ -52,7 +52,7 @@ export function SignIn() {
           title: "Wrong email or password",
           status: "error",
           isClosable: true,
-          position: "top",
+          // position: "top",
           duration: 5000,
         });
       }

@@ -36,8 +36,9 @@ export default function ConfirmDialog({
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
         onClose={onClose}
+        isCentered
       >
-        <AlertDialogOverlay>
+        <AlertDialogOverlay bg="blackAlpha.50" backdropFilter="blur(2px)">
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
               {title}
