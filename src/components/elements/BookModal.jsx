@@ -46,9 +46,13 @@ const BookModal = ({
               {bookOpened?.author} • {bookOpened?.publisher}
             </Text>
             <HStack mt={3} mb={1}>
-              {bookOpened?.isFiction && <Tag size="sm">Fiction</Tag>}
+              {
+                <Tag size="sm" textTransform="capitalize">
+                  {bookOpened?.isFiction ? "Fiction" : "Non Fiction"}
+                </Tag>
+              }
               {bookOpened?.genres?.map((genre, index) => (
-                <Tag size="sm" key={index} autoCapitalize>
+                <Tag size="sm" key={index} textTransform="capitalize">
                   {genre}
                 </Tag>
               ))}
