@@ -25,7 +25,10 @@ export function Home() {
 
   const { error, isLoading, data: booksData } = useFetch("/books");
 
-  const books = useMemo(() => booksData?.data?.books || [], [booksData]);
+  const books = useMemo(
+    () => booksData?.data?.books?.reverse() || [],
+    [booksData],
+  );
 
   const filteredBooks = useMemo(() => {
     return books.filter((books) => {
@@ -38,9 +41,9 @@ export function Home() {
       ) {
         return true;
       }
-      return false;
+      // return false;
     });
-  }, [books]);
+  }, [books, query]);
 
   const borrowBookHandler = async (book) => {
     try {

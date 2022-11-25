@@ -34,7 +34,7 @@ export function SeeBooks() {
   const [refreshSignal, setRefreshSignal] = useState(false);
 
   const { data } = useFetch("/books", refreshSignal);
-  const books = useMemo(() => data?.data?.books || [], [data]);
+  const books = useMemo(() => data?.data?.books?.reverse() || [], [data]);
 
   const [selectedBook, setSelectedBook] = useState();
 

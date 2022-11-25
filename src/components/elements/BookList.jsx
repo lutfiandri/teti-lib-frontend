@@ -1,6 +1,8 @@
-import { Box, Image, SimpleGrid, Text } from "@chakra-ui/react";
+import { Box, Image, Text } from "@chakra-ui/react";
 import styles from "@/styles/transition.module.css";
+import masonryStyles from "@/styles/masonry.module.css";
 import clsx from "clsx";
+import Masonry from "react-masonry-css";
 
 const BookList = ({ error, isLoading, books, onOpen, setBookOpened }) => {
   const onCardClick = (book) => {
@@ -12,7 +14,11 @@ const BookList = ({ error, isLoading, books, onOpen, setBookOpened }) => {
       {error && <div>{error}</div>}
       {isLoading && <div>Loading...</div>}
 
-      <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={5}>
+      <Masonry
+        breakpointCols={{ default: 4, 480: 1, 768: 2, 992: 3 }}
+        className={clsx(masonryStyles["masonry-grid"])}
+        columnClassName={clsx(masonryStyles["masonry-grid-column"])}
+      >
         {books?.map((book) => (
           <Box
             onClick={() => onCardClick(book)}
@@ -23,6 +29,7 @@ const BookList = ({ error, isLoading, books, onOpen, setBookOpened }) => {
             borderRadius="lg"
             overflow="hidden"
             className={clsx(styles["animate-up-on-hover"])}
+            mb={4}
           >
             <Box w="100%" bg="red.100">
               <Image
@@ -40,7 +47,7 @@ const BookList = ({ error, isLoading, books, onOpen, setBookOpened }) => {
             </Box>
           </Box>
         ))}
-      </SimpleGrid>
+      </Masonry>
     </Box>
   );
 };
