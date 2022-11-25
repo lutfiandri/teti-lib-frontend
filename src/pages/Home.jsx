@@ -40,7 +40,7 @@ export function Home() {
       }
       return false;
     });
-  }, [books]);
+  }, [books, query]);
 
   const borrowBookHandler = async (book) => {
     try {
