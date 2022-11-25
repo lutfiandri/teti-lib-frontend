@@ -25,7 +25,10 @@ export function Home() {
 
   const { error, isLoading, data: booksData } = useFetch("/books");
 
-  const books = useMemo(() => booksData?.data?.books || [], [booksData]);
+  const books = useMemo(
+    () => booksData?.data?.books?.reverse() || [],
+    [booksData],
+  );
 
   const filteredBooks = useMemo(() => {
     return books.filter((books) => {
@@ -38,9 +41,9 @@ export function Home() {
       ) {
         return true;
       }
-      return false;
+      // return false;
     });
-  }, [books]);
+  }, [books, query]);
 
   const borrowBookHandler = async (book) => {
     try {
@@ -69,7 +72,7 @@ export function Home() {
   return (
     <DefaultLayout>
       <Box bg="gray.100" w="100%">
-        <Container maxWidth="6xl" p={5}>
+        <Container maxWidth="8xl" py={5}>
           <HStack>
             <Input
               onChange={(event) => setQuery(event.target.value)}

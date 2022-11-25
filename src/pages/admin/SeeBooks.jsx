@@ -1,3 +1,4 @@
+import BookModal from "@/components/elements/BookModal";
 import ConfirmDialog from "@/components/elements/ConfirmDialog";
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
 import { AddBookFormModal } from "@/components/templates/AddBookFormModal";
@@ -34,7 +35,7 @@ export function SeeBooks() {
   const [refreshSignal, setRefreshSignal] = useState(false);
 
   const { data } = useFetch("/books", refreshSignal);
-  const books = useMemo(() => data?.data?.books || [], [data]);
+  const books = useMemo(() => data?.data?.books?.reverse() || [], [data]);
 
   const [selectedBook, setSelectedBook] = useState();
 
@@ -54,6 +55,12 @@ export function SeeBooks() {
     isOpen: isDeleteBookOpen,
     onOpen: onDeleteBookOpen,
     onClose: onDeleteBookClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isDetailBookOpen,
+    onOpen: onDetailBookOpen,
+    onClose: onDetailBookClose,
   } = useDisclosure();
 
   return (
@@ -109,7 +116,14 @@ export function SeeBooks() {
                   </Td>
                   <Td>
                     <HStack>
-                      <Button size="sm" colorScheme="blue">
+                      <Button
+                        size="sm"
+                        colorScheme="blue"
+                        onClick={() => {
+                          onDetailBookOpen();
+                          setSelectedBook(book);
+                        }}
+                      >
                         Detail
                       </Button>
                       <Button
@@ -153,6 +167,12 @@ export function SeeBooks() {
         setRefreshSignal={setRefreshSignal}
         initialBook={selectedBook}
       />
+
+      <BookModal
+        isOpen={isDetailBookOpen}
+        onClose={onDetailBookClose}
+        bookOpened={selectedBook}
+      ></BookModal>
 
       <ConfirmDialog
         title="Warning"

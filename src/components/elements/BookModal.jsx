@@ -12,6 +12,7 @@ import {
   Tag,
   Text,
 } from "@chakra-ui/react";
+import { RenderIf } from "./RenderIf";
 
 const BookModal = ({
   isOpen,
@@ -46,9 +47,13 @@ const BookModal = ({
               {bookOpened?.author} • {bookOpened?.publisher}
             </Text>
             <HStack mt={3} mb={1}>
-              {bookOpened?.isFiction && <Tag size="sm">Fiction</Tag>}
+              {
+                <Tag size="sm" textTransform="capitalize">
+                  {bookOpened?.isFiction ? "Fiction" : "Non Fiction"}
+                </Tag>
+              }
               {bookOpened?.genres?.map((genre, index) => (
-                <Tag size="sm" key={index}>
+                <Tag size="sm" key={index} textTransform="capitalize">
                   {genre}
                 </Tag>
               ))}
@@ -57,15 +62,17 @@ const BookModal = ({
             <Text fontSize="16">{bookOpened?.synopsis}</Text>
           </ModalBody>
 
-          <ModalFooter justifyContent="center">
-            <Button
-              colorScheme="teal"
-              width="100%"
-              onClick={actionButtonHandler}
-            >
-              {actionButtonText}
-            </Button>
-          </ModalFooter>
+          <RenderIf when={actionButtonHandler || actionButtonText}>
+            <ModalFooter justifyContent="center">
+              <Button
+                colorScheme="teal"
+                width="100%"
+                onClick={actionButtonHandler}
+              >
+                {actionButtonText}
+              </Button>
+            </ModalFooter>
+          </RenderIf>
         </ModalContent>
       </Modal>
     </div>
