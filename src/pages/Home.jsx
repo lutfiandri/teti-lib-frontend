@@ -22,6 +22,7 @@ import FilterBook from "@/components/elements/Filterbook";
 import BookList from "@/components/elements/BookList";
 import BookModal from "@/components/elements/BookModal";
 import { createFetcher } from "@/utils/services/fetcher";
+import { useEffect } from 'react';
 
 export function Home() {
   const toast = useToast();
@@ -29,32 +30,46 @@ export function Home() {
 
   const [bookOpened, setBookOpened] = useState({});
     const [query, setQuery] = useState("");
-    const [filter, setFilter] = useState("");
+    const [availibilityFilter, setAvailibilityFilter] = useState("ShowAll");
+    const [genreFilter, setGenreFilter] = useState("All Genres");
 
   const { error, isLoading, data: booksData } = useFetch("/books");
 
   const books = useMemo(() => booksData?.data?.books || [], [booksData]);
 
   const filteredBooks = useMemo(() => {
-    return books.filter((books) => {
-        if (query === "") {
-            return true;
-        } else if (
-            books.title.toLowerCase().includes(query.toLowerCase()) ||
-            books.author.toLowerCase().includes(query.toLowerCase()) ||
-            books.publisher.toLowerCase().includes(query.toLowerCase())
-        ) {
-            return true;
-        }  if (filter === "ShowAvailable" && books.numOfAvailableBooks > 0) {
-            return true;
-        }  if (filter === "Fiction" && books.isFiction) {
-            return true;
-        }  if (filter === "nonFiction" && !books.isFiction) {
-            return true;
-        }
-      return false;
-    });
-  }, [books, query, filter]);
+      return books.filter((book) => {
+          if (query === "") {
+              return true;
+          } else if (
+              book.title.toLowerCase().includes(query.toLowerCase()) ||
+              book.author.toLowerCase().includes(query.toLowerCase()) ||
+              book.publisher.toLowerCase().includes(query.toLowerCase())
+          ) {
+              return true;
+          }
+          // return false;
+      }).filter((book) => {
+          if (availibilityFilter === "ShowAll") {
+              return true;
+          } else if (availibilityFilter === "ShowAvailable") {
+              return book.numOfAvailableBooks > 0;
+          } 
+      }).filter((book) => {
+          if (genreFilter === "All Genres") {
+              return true;
+          } else if (genreFilter === "Fiction") {
+              return book.isFiction;
+          } else if (genreFilter === "nonFiction") {
+              return !book.isFiction;
+          }
+      }
+      );
+  }, [books, query, availibilityFilter, genreFilter]);
+
+    useEffect(() => {
+        console.log(filteredBooks);
+    }, [filteredBooks])
 
   const borrowBookHandler = async (book) => {
     try {
@@ -96,12 +111,12 @@ export function Home() {
                               Filter
                           </MenuButton>
                           <MenuList minWidth="240px">
-                                  <MenuOptionGroup onChange={setFilter} value={filter} defaultValue="ShowAll" title="Availability" type="radio">
+                                  <MenuOptionGroup onChange={setAvailibilityFilter} value={availibilityFilter} defaultValue="ShowAll" title="Availability" type="radio">
                                       <MenuItemOption value="ShowAll">Show All</MenuItemOption>
                                       <MenuItemOption value="ShowAvailable">Show Available</MenuItemOption>
                               </MenuOptionGroup>
                               <MenuDivider />
-                                  <MenuOptionGroup onChange={setFilter} value={filter} defaultValue="All Genres" title="Genre" type="radio">
+                                  <MenuOptionGroup onChange={setGenreFilter} value={genreFilter} defaultValue="All Genres" title="Genre" type="radio">
                                       <MenuItemOption value="All Genres">All Genres</MenuItemOption>
                                       <MenuItemOption value="Fiction">Fiction</MenuItemOption>
                                       <MenuItemOption value="nonFiction">Non Fiction</MenuItemOption>
