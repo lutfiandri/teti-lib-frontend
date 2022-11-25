@@ -11,11 +11,9 @@ export function ImageUpload({
   initialImageUrl,
 }) {
   const [_, selectImage] = useFileUpload();
-  const [image, setImage] = useState(null);
   const [url, setUrl] = useState(initialImageUrl);
 
   const removeImageHandler = () => {
-    setImage(null);
     setImageUrl(null);
     setIsImageLoading(true);
     setUrl(null);
@@ -37,7 +35,6 @@ export function ImageUpload({
             // Single File Upload accepts only images
             setIsImageLoading(true);
             selectImage({ accept: "image/*" }, (image) => {
-              setImage(image);
               setUrl(image.source);
               uploadImage(image.file).then((url) => {
                 setImageUrl(url);
