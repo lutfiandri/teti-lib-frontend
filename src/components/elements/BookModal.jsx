@@ -12,6 +12,7 @@ import {
   Tag,
   Text,
 } from "@chakra-ui/react";
+import { RenderIf } from "./RenderIf";
 
 const BookModal = ({
   isOpen,
@@ -61,15 +62,17 @@ const BookModal = ({
             <Text fontSize="16">{bookOpened?.synopsis}</Text>
           </ModalBody>
 
-          <ModalFooter justifyContent="center">
-            <Button
-              colorScheme="teal"
-              width="100%"
-              onClick={actionButtonHandler}
-            >
-              {actionButtonText}
-            </Button>
-          </ModalFooter>
+          <RenderIf when={actionButtonHandler || actionButtonText}>
+            <ModalFooter justifyContent="center">
+              <Button
+                colorScheme="teal"
+                width="100%"
+                onClick={actionButtonHandler}
+              >
+                {actionButtonText}
+              </Button>
+            </ModalFooter>
+          </RenderIf>
         </ModalContent>
       </Modal>
     </div>

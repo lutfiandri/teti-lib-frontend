@@ -1,3 +1,4 @@
+import BookModal from "@/components/elements/BookModal";
 import ConfirmDialog from "@/components/elements/ConfirmDialog";
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
 import { AddBookFormModal } from "@/components/templates/AddBookFormModal";
@@ -56,6 +57,12 @@ export function SeeBooks() {
     onClose: onDeleteBookClose,
   } = useDisclosure();
 
+  const {
+    isOpen: isDetailBookOpen,
+    onOpen: onDetailBookOpen,
+    onClose: onDetailBookClose,
+  } = useDisclosure();
+
   return (
     <DefaultLayout>
       <Container maxW="8xl" py={8}>
@@ -109,7 +116,14 @@ export function SeeBooks() {
                   </Td>
                   <Td>
                     <HStack>
-                      <Button size="sm" colorScheme="blue">
+                      <Button
+                        size="sm"
+                        colorScheme="blue"
+                        onClick={() => {
+                          onDetailBookOpen();
+                          setSelectedBook(book);
+                        }}
+                      >
                         Detail
                       </Button>
                       <Button
@@ -153,6 +167,12 @@ export function SeeBooks() {
         setRefreshSignal={setRefreshSignal}
         initialBook={selectedBook}
       />
+
+      <BookModal
+        isOpen={isDetailBookOpen}
+        onClose={onDetailBookClose}
+        bookOpened={selectedBook}
+      ></BookModal>
 
       <ConfirmDialog
         title="Warning"
