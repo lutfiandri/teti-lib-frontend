@@ -34,6 +34,12 @@ export function EditBookFormModal({
   const [isImageLoading, setIsImageLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    // note: on first render, initialBook may be undefined
+    //       so, we need this
+    setImageUrl(initialBook?.imageUrl);
+  }, [initialBook]);
+
   const editBookHandler = async () => {
     try {
       setIsLoading(true);
