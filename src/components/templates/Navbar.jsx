@@ -6,6 +6,7 @@ import {
   Text,
   IconButton,
   Flex,
+  Center,
 } from "@chakra-ui/react";
 
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
@@ -78,6 +79,9 @@ export function Navbar() {
             </RenderIf>
 
             <RenderIf when={user}>
+              <Text fontSize="md" display={{ base: "none", md: "flex" }}>
+                {user?.email}
+              </Text>
               <Button
                 colorScheme="red"
                 variant="solid"
@@ -108,6 +112,7 @@ export function Navbar() {
         </HStack>
       </Container>
 
+      {/* MOBILE */}
       <Flex
         w="100vw"
         bgColor="whiteAlpha.800"
@@ -131,15 +136,45 @@ export function Navbar() {
             onClick={() => setDisplay("none")}
           />
         </Flex>
-        <Flex flexDir="column" align="center">
+        <Flex flexDir="column" align="center" h="full" py={8}>
           <Button
             colorScheme="teal"
             variant="link"
-            p={4}
-            onClick={() => navigate("/my/books")}
+            onClick={() => navigate("/")}
           >
-            My Books
+            <Text fontWeight="bold" pr={1} fontSize="xl">
+              TETI
+            </Text>
+            <Text fontWeight="normal" pr={1} fontSize="xl">
+              LIBRARY
+            </Text>
           </Button>
+
+          <RenderIf when={user?.role === "USER"}>
+            <Button
+              colorScheme="teal"
+              variant="link"
+              p={4}
+              onClick={() => navigate("/my/books")}
+            >
+              My Books
+            </Button>
+          </RenderIf>
+
+          <RenderIf when={user?.role === "ADMIN"}>
+            <Button
+              colorScheme="teal"
+              variant="link"
+              p={4}
+              onClick={() => navigate("/admin/books")}
+            >
+              Manage Books
+            </Button>
+          </RenderIf>
+
+          <Box flex={1}></Box>
+
+          <Text>{user?.email}</Text>
 
           <RenderIf when={!user}>
             <Button
@@ -147,7 +182,6 @@ export function Navbar() {
               variant="solid"
               p={4}
               mt={2}
-              size="sm"
               onClick={() => navigate("/signin")}
             >
               Sign In
@@ -160,7 +194,6 @@ export function Navbar() {
               variant="solid"
               p={4}
               mt={2}
-              size="sm"
               onClick={() => {
                 setUser(null);
                 localStorage.setItem("accessToken", "");

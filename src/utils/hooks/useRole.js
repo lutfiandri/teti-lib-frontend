@@ -11,7 +11,7 @@ export const useRole = (role = "USER", redirectEndpointFallback = "/") => {
   const { user, setUser } = useContext(UserContext);
 
   const redirectIfNeeded = (user) => {
-    if (user.role !== role || !user)
+    if (user?.role !== role || !user)
       navigate(redirectEndpointFallback, { replace: true });
   };
 
@@ -19,6 +19,7 @@ export const useRole = (role = "USER", redirectEndpointFallback = "/") => {
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) {
       redirectIfNeeded();
+      return;
     }
 
     const payloadB64 = accessToken.split(".")[1];
@@ -36,6 +37,7 @@ export const useRole = (role = "USER", redirectEndpointFallback = "/") => {
     // get user info
     if (user) {
       redirectIfNeeded(user);
+      return;
     } else {
       (async function () {
         try {
@@ -44,6 +46,7 @@ export const useRole = (role = "USER", redirectEndpointFallback = "/") => {
           const user = res.data.data.user;
 
           redirectIfNeeded(user);
+          return;
 
           setUser({
             id: user._id,
@@ -55,6 +58,7 @@ export const useRole = (role = "USER", redirectEndpointFallback = "/") => {
         } catch (error) {
           setUser(null);
           redirectIfNeeded();
+          return;
         }
       })();
     }
