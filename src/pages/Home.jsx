@@ -5,7 +5,14 @@ import {
   Container,
   HStack,
   Input,
-  useToast,
+    useToast,
+    Button,
+    Menu,
+    MenuButton,
+    MenuDivider,
+    MenuItemOption,
+    MenuList,
+    MenuOptionGroup,
 } from "@chakra-ui/react";
 
 import React, { useMemo, useState } from "react";
@@ -21,7 +28,8 @@ export function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [bookOpened, setBookOpened] = useState({});
-  const [query, setQuery] = useState("");
+    const [query, setQuery] = useState("");
+    const [filter, setFilter] = useState("");
 
   const { error, isLoading, data: booksData } = useFetch("/books");
 
@@ -29,18 +37,24 @@ export function Home() {
 
   const filteredBooks = useMemo(() => {
     return books.filter((books) => {
-      if (query === "") {
-        return true;
-      } else if (
-        books.title.toLowerCase().includes(query.toLowerCase()) ||
-        books.author.toLowerCase().includes(query.toLowerCase()) ||
-        books.publisher.toLowerCase().includes(query.toLowerCase())
-      ) {
-        return true;
-      }
+        if (query === "") {
+            return true;
+        } else if (
+            books.title.toLowerCase().includes(query.toLowerCase()) ||
+            books.author.toLowerCase().includes(query.toLowerCase()) ||
+            books.publisher.toLowerCase().includes(query.toLowerCase())
+        ) {
+            return true;
+        }  if (filter === "ShowAvailable" && books.numOfAvailableBooks > 0) {
+            return true;
+        }  if (filter === "Fiction" && books.isFiction) {
+            return true;
+        }  if (filter === "nonFiction" && !books.isFiction) {
+            return true;
+        }
       return false;
     });
-  }, [books, query]);
+  }, [books, query, filter]);
 
   const borrowBookHandler = async (book) => {
     try {
@@ -76,7 +90,25 @@ export function Home() {
               placeholder="Search"
               borderColor="blue.600"
             />
-            <FilterBook />
+            <Box>
+                      <Menu closeOnSelect={false}>
+                          <MenuButton as={Button} colorScheme="blue" m={2}>
+                              Filter
+                          </MenuButton>
+                          <MenuList minWidth="240px">
+                                  <MenuOptionGroup onChange={setFilter} value={filter} defaultValue="ShowAll" title="Availability" type="radio">
+                                      <MenuItemOption value="ShowAll">Show All</MenuItemOption>
+                                      <MenuItemOption value="ShowAvailable">Show Available</MenuItemOption>
+                              </MenuOptionGroup>
+                              <MenuDivider />
+                                  <MenuOptionGroup onChange={setFilter} value={filter} defaultValue="All Genres" title="Genre" type="radio">
+                                      <MenuItemOption value="All Genres">All Genres</MenuItemOption>
+                                      <MenuItemOption value="Fiction">Fiction</MenuItemOption>
+                                      <MenuItemOption value="nonFiction">Non Fiction</MenuItemOption>
+                              </MenuOptionGroup>
+                          </MenuList>
+                          </Menu>
+            </Box>
           </HStack>
           <BookList
             error={error}
