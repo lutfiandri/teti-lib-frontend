@@ -23,7 +23,7 @@ export function Navbar() {
   return (
     <Box as="header" bg="blackAlpha.50">
       <Container as="nav" maxW="8xl">
-        <HStack justifyContent="space-between" py={2}>
+        <HStack justifyContent="space-between" py={2} minH="60px">
           <div>
             <Button
               colorScheme="teal"
@@ -37,15 +37,30 @@ export function Navbar() {
                 LIBRARY
               </Text>
             </Button>
-            <Button
-              colorScheme="teal"
-              variant="link"
-              p={4}
-              display={{ base: "none", md: "inline-block" }}
-              onClick={() => navigate("/my/books")}
-            >
-              My Books
-            </Button>
+            <RenderIf when={user?.role === "USER"}>
+              <Button
+                colorScheme="teal"
+                variant="link"
+                p={4}
+                py={1}
+                display={{ base: "none", md: "inline-block" }}
+                onClick={() => navigate("/my/books")}
+              >
+                My Books
+              </Button>
+            </RenderIf>
+            <RenderIf when={user?.role === "ADMIN"}>
+              <Button
+                colorScheme="teal"
+                variant="link"
+                p={4}
+                py={1}
+                display={{ base: "none", md: "inline-block" }}
+                onClick={() => navigate("/admin/books")}
+              >
+                Manage Books
+              </Button>
+            </RenderIf>
           </div>
 
           <HStack>
@@ -54,6 +69,7 @@ export function Navbar() {
                 colorScheme="teal"
                 variant="solid"
                 p={4}
+                size="sm"
                 display={{ base: "none", md: "flex" }}
                 onClick={() => navigate("/signin")}
               >
@@ -66,6 +82,7 @@ export function Navbar() {
                 colorScheme="red"
                 variant="solid"
                 p={4}
+                size="sm"
                 display={{ base: "none", md: "flex" }}
                 onClick={() => {
                   setUser(null);
@@ -94,6 +111,7 @@ export function Navbar() {
       <Flex
         w="100vw"
         bgColor="whiteAlpha.800"
+        backdropFilter="blur(2px)"
         zIndex={20}
         h="100vh"
         pos="fixed"
@@ -129,6 +147,7 @@ export function Navbar() {
               variant="solid"
               p={4}
               mt={2}
+              size="sm"
               onClick={() => navigate("/signin")}
             >
               Sign In
@@ -141,6 +160,7 @@ export function Navbar() {
               variant="solid"
               p={4}
               mt={2}
+              size="sm"
               onClick={() => {
                 setUser(null);
                 localStorage.setItem("accessToken", "");
