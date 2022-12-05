@@ -56,7 +56,7 @@ export const useRole = (role = "USER", redirectEndpointFallback = "/") => {
             borrowedBookIds: user.borrowedBookIds,
           });
         } catch (error) {
-          setUser(null);
+          // setUser(null);
           redirectIfNeeded();
           return;
         }

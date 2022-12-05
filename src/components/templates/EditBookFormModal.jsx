@@ -120,7 +120,7 @@ export function EditBookFormModal({
     >
       <ModalOverlay bg="blackAlpha.50" backdropFilter="blur(2px)" />
       <ModalContent>
-        <ModalHeader>Add Book</ModalHeader>
+        <ModalHeader>Edit Book</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Stack spacing={4} direction={{ base: "column-reverse", md: "row" }}>
