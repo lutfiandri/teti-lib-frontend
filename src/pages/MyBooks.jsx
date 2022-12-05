@@ -1,22 +1,20 @@
+import BookList from "@/components/elements/BookList";
+import BookModal from "@/components/elements/BookModal";
+import FilterBook from "@/components/elements/Filterbook";
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
+import UserContext from "@/contexts/userContext";
+import { useFetch } from "@/utils/hooks/useFetch";
+import { useRole } from "@/utils/hooks/useRole";
+import { createFetcher } from "@/utils/services/fetcher";
 import {
   Box,
-  useDisclosure,
   Container,
   HStack,
   Input,
+  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-
-import React, { useContext, useMemo, useState } from "react";
-
-import { useFetch } from "@/utils/hooks/useFetch";
-import FilterBook from "@/components/elements/Filterbook";
-import BookList from "@/components/elements/BookList";
-import BookModal from "@/components/elements/BookModal";
-import UserContext from "@/contexts/userContext";
-import { useRole } from "@/utils/hooks/useRole";
-import { createFetcher } from "@/utils/services/fetcher";
+import { useContext, useMemo, useState } from "react";
 
 export function MyBooks() {
   useRole("USER");
@@ -60,7 +58,7 @@ export function MyBooks() {
 
   const filteredBooks = useMemo(() => {
     return books
-      .filter((book) => book.borrowerIds.includes(user.id))
+      .filter((book) => book.borrowerIds.includes(user?.id))
       .filter((books) => {
         if (query === "") {
           return true;

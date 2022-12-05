@@ -22,12 +22,12 @@ export function Navbar() {
   const navigate = useNavigate();
 
   return (
-    <Box as="header" bg="blackAlpha.50">
+    <Box as="header" bg="blue.500" textColor="white">
       <Container as="nav" maxW="8xl">
-        <HStack justifyContent="space-between" py={2} minH="60px">
+        <HStack justifyContent="space-between" py={4} minH="60px">
           <div>
             <Button
-              colorScheme="teal"
+              colorScheme="white"
               variant="link"
               onClick={() => navigate("/")}
             >

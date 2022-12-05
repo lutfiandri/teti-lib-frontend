@@ -1,4 +1,5 @@
-import { Navbar } from "@/components/templates/Navbar";
+import Navbar from "@/components/templates/navbar/Navbar";
+import { Box } from "@chakra-ui/react";
 import { Helmet } from "react-helmet";
 
 export function DefaultLayout({ children, title = "TETI Library" }) {
@@ -8,8 +9,10 @@ export function DefaultLayout({ children, title = "TETI Library" }) {
         <title>{title}</title>
       </Helmet>
 
-      <Navbar></Navbar>
-      <main>{children}</main>
+      <Navbar />
+      <Box as="main" minH="calc(100vh - 64px)">
+        {children}
+      </Box>
     </>
   );
 }

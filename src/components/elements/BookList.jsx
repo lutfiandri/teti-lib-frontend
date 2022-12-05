@@ -3,6 +3,7 @@ import styles from "@/styles/transition.module.css";
 import masonryStyles from "@/styles/masonry.module.css";
 import clsx from "clsx";
 import Masonry from "react-masonry-css";
+import BookCard from "./BookCard";
 
 const BookList = ({ error, isLoading, books, onOpen, setBookOpened }) => {
   const onCardClick = (book) => {
@@ -20,32 +21,11 @@ const BookList = ({ error, isLoading, books, onOpen, setBookOpened }) => {
         columnClassName={clsx(masonryStyles["masonry-grid-column"])}
       >
         {books?.map((book) => (
-          <Box
+          <BookCard
+            book={book}
             onClick={() => onCardClick(book)}
-            cursor="pointer"
-            bg="white"
-            width="100%"
             key={book._id}
-            borderRadius="lg"
-            overflow="hidden"
-            className={clsx(styles["animate-up-on-hover"])}
-            mb={4}
-          >
-            <Box w="100%" bg="red.100">
-              <Image
-                w="100%"
-                objectFit="cover"
-                src={book?.imageUrl}
-                alt={book?.title}
-              />
-            </Box>
-            <Box m={3}>
-              <Text>{book.title}</Text>
-              <Text fontSize="12">
-                {book?.author} • {book?.publisher}
-              </Text>
-            </Box>
-          </Box>
+          />
         ))}
       </Masonry>
     </Box>

@@ -15,8 +15,10 @@ import FilterBook from "@/components/elements/Filterbook";
 import BookList from "@/components/elements/BookList";
 import BookModal from "@/components/elements/BookModal";
 import { createFetcher } from "@/utils/services/fetcher";
+import { useRole } from "@/utils/hooks/useRole";
 
 export function Home() {
+  useRole();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
