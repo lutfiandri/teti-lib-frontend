@@ -1,25 +1,15 @@
-import { DefaultLayout } from "@/components/layouts/DefaultLayout";
-import {
-  Box,
-  useDisclosure,
-  Container,
-  HStack,
-  Input,
-  useToast,
-} from "@chakra-ui/react";
-
-import React, { useMemo, useState } from "react";
-
-import { useFetch } from "@/utils/hooks/useFetch";
-import FilterBook from "@/components/elements/Filterbook";
 import BookList from "@/components/elements/BookList";
 import BookModal from "@/components/elements/BookModal";
-import { createFetcher } from "@/utils/services/fetcher";
+import FilterBook from "@/components/elements/Filterbook";
+import { DefaultLayout } from "@/components/layouts/DefaultLayout";
+import { useFetch } from "@/utils/hooks/useFetch";
 import { useRole } from "@/utils/hooks/useRole";
+import { Box, Container, HStack, Input, useDisclosure } from "@chakra-ui/react";
+import { useEffect, useMemo, useState } from "react";
 
 export function Home() {
   useRole();
-  const toast = useToast();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [bookOpened, setBookOpened] = useState({});
@@ -27,10 +17,11 @@ export function Home() {
 
   const { error, isLoading, data: booksData } = useFetch("/books");
 
-  const books = useMemo(
-    () => booksData?.data?.books?.reverse() || [],
-    [booksData],
-  );
+  const [books, setBooks] = useState([]);
+  useEffect(() => {
+    if (!booksData?.data?.books) return;
+    setBooks(booksData.data.books.reverse());
+  }, [booksData]);
 
   const filteredBooks = useMemo(() => {
     return books.filter((books) => {
@@ -43,33 +34,9 @@ export function Home() {
       ) {
         return true;
       }
-      // return false;
+      return false;
     });
   }, [books, query]);
-
-  const borrowBookHandler = async (book) => {
-    try {
-      const fetcher = createFetcher();
-
-      const res = await fetcher.post("/borrows", { bookId: book._id });
-      toast({
-        title: "Borrowed",
-        description: "Book saved into My Books.",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Error happened.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-      console.error(error);
-    }
-  };
 
   return (
     <DefaultLayout>
@@ -98,9 +65,10 @@ export function Home() {
         isOpen={isOpen}
         onClose={onClose}
         bookOpened={bookOpened}
-        actionButtonText="Borrow"
-        actionButtonHandler={async () => await borrowBookHandler(bookOpened)}
-      ></BookModal>
+        showActionButton
+        books={books}
+        setBooks={setBooks}
+      />
     </DefaultLayout>
   );
 }
