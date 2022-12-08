@@ -2,6 +2,7 @@ import BookList from "@/components/elements/BookList";
 import BookModal from "@/components/elements/BookModal";
 import FilterBook from "@/components/elements/Filterbook";
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
+import { LoadingScreen } from "@/components/templates/loadingScreen/LoadingScreen";
 import { useFetch } from "@/utils/hooks/useFetch";
 import { useRole } from "@/utils/hooks/useRole";
 import { Box, Container, HStack, Input, useDisclosure } from "@chakra-ui/react";
@@ -39,36 +40,40 @@ export function Home() {
   }, [books, query]);
 
   return (
-    <DefaultLayout>
-      <Box bg="gray.100" w="100%">
-        <Container maxWidth="8xl" py={5}>
-          <HStack>
-            <Input
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search"
-              borderColor="blue.600"
-            />
-            <FilterBook />
-          </HStack>
-          <BookList
-            error={error}
-            isLoading={isLoading}
-            books={filteredBooks}
-            onOpen={onOpen}
-            setBookOpened={setBookOpened}
-          >
-            {" "}
-          </BookList>
-        </Container>
-      </Box>
-      <BookModal
-        isOpen={isOpen}
-        onClose={onClose}
-        bookOpened={bookOpened}
-        showActionButton
-        books={books}
-        setBooks={setBooks}
-      />
-    </DefaultLayout>
+    <>
+      <LoadingScreen when={isLoading} text="Getting Books" />
+
+      <DefaultLayout>
+        <Box bg="gray.100" w="100%">
+          <Container maxWidth="8xl" py={5}>
+            <HStack>
+              <Input
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Search"
+                borderColor="blue.600"
+              />
+              <FilterBook />
+            </HStack>
+            <BookList
+              error={error}
+              isLoading={isLoading}
+              books={filteredBooks}
+              onOpen={onOpen}
+              setBookOpened={setBookOpened}
+            >
+              {" "}
+            </BookList>
+          </Container>
+        </Box>
+        <BookModal
+          isOpen={isOpen}
+          onClose={onClose}
+          bookOpened={bookOpened}
+          showActionButton
+          books={books}
+          setBooks={setBooks}
+        />
+      </DefaultLayout>
+    </>
   );
 }

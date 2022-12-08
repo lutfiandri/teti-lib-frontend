@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
 import { createFetcher } from "@/utils/services/fetcher";
+import { useEffect, useState } from "react";
 
 export const useFetch = (endpoint, refreshSignal) => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState();
   const [error, setError] = useState();
 
   useEffect(() => {
