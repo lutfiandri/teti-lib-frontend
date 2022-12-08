@@ -10,7 +10,7 @@ export function DefaultLayout({ children, title = "TETI Library" }) {
       </Helmet>
 
       <Navbar />
-      <Box as="main" minH="calc(100vh - 64px)">
+      <Box as="main" minH="calc(100vh - 64px)" pos="relative">
         {children}
       </Box>
     </>

@@ -1,4 +1,4 @@
-import { useBreakpointValue } from "@chakra-ui/react";
+import { Box, useBreakpointValue } from "@chakra-ui/react";
 import DesktopNavbar from "./DesktopNavbar";
 import MobileNavbar from "./MobileNavbar";
 
@@ -7,10 +7,10 @@ export default function Navbar() {
     base: "base",
     md: "md",
   });
-  if (size === "base") {
-    return <MobileNavbar />;
-  }
-  if (size === "md") {
-    return <DesktopNavbar />;
-  }
+
+  return (
+    <Box pos="sticky" top={0} zIndex={1000}>
+      {size === "base" ? <MobileNavbar /> : <DesktopNavbar />}
+    </Box>
+  );
 }
