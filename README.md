@@ -5,6 +5,17 @@
 
 <br>
 
+## Related Repository
+
+- Frontend Repo: [https://github.com/lutfiandri/teti-lib-frontend](https://github.com/lutfiandri/teti-lib-frontend) (current)
+- Backend Repo: [https://github.com/lutfiandri/teti-lib](https://github.com/lutfiandri/teti-lib)
+
+## Links
+
+- Slide Presentasi: [Click Here](https://www.canva.com/design/DAFSQCxxR6Q/3yai7zDDPaF2WBaAPU3OfA/view?utm_content=DAFSQCxxR6Q&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink#1)
+- Front End: https://teti-library.vercel.app/
+- Back End: https://teti-lib.vercel.app/
+
 ## Development Setup
 
 ### Prerequisites
@@ -27,10 +38,6 @@
   # on development
   yarn dev
   ```
-
-## Design
-
-https://www.figma.com/file/o9jFClSGyHeVayp6oAozCP/PAW-kelompok-2
 
 ## Branch Naming
 
