@@ -1,6 +1,5 @@
-import { Box, Image, Text } from "@chakra-ui/react";
-import styles from "@/styles/transition.module.css";
 import masonryStyles from "@/styles/masonry.module.css";
+import { Box } from "@chakra-ui/react";
 import clsx from "clsx";
 import Masonry from "react-masonry-css";
 import BookCard from "./BookCard";
@@ -11,7 +10,7 @@ const BookList = ({ error, isLoading, books, onOpen, setBookOpened }) => {
     setBookOpened(book);
   };
   return (
-    <Box mt={4}>
+    <Box mt={4} mx="-8px">
       {error && <div>{error}</div>}
       {isLoading && <div>Loading...</div>}
 
