@@ -61,10 +61,20 @@ export function Home() {
               setBookOpened={setBookOpened}
             />
 
-            <RenderIf when={filteredBooks?.length === 0}>
+            <RenderIf when={books?.length === 0}>
               <HStack spacing="4px" mt={8} w="full" justifyContent="center">
                 <Text textAlign="center">
                   No books yet here, ask admin to add books.
+                </Text>
+              </HStack>
+            </RenderIf>
+
+            <RenderIf when={books?.length > 0 && filteredBooks?.length === 0}>
+              <HStack spacing="4px" mt={8} w="full" justifyContent="center">
+                <Text textAlign="center">
+                  Can&apos;t find book with search query:{" "}
+                  <b>&quot;{searchFilter}&quot;</b>, avalibility:{" "}
+                  <b>{availibilityFilter}</b>, and genres: <b>{genreFilter}</b>
                 </Text>
               </HStack>
             </RenderIf>
