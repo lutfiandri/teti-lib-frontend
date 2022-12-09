@@ -32,7 +32,7 @@ export const borrowBookHandler = async (
       (newBook) => newBook._id === book._id,
     );
     newBooks[newBookIndex].numOfAvailableBooks -= 1;
-    newBooks[newBookIndex].borrowerIds.push(user._id);
+    newBooks[newBookIndex].borrowerIds.push(user.id);
     setBooks(newBooks);
   } catch (error) {
     toast({
