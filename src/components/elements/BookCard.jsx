@@ -1,3 +1,4 @@
+import styles from "@/styles/transition.module.css";
 import {
   Box,
   Image,
@@ -7,19 +8,15 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import styles from "@/styles/transition.module.css";
 import clsx from "clsx";
 
+import UserContext from "@/contexts/userContext";
+import { useContext } from "react";
 import { HiBookmark, HiCheck, HiXMark } from "react-icons/hi2";
 import { RenderIf } from "./RenderIf";
-import { useContext, useEffect } from "react";
-import UserContext from "@/contexts/userContext";
 
 export default function BookCard({ book, onClick }) {
-  const { user, setUser } = useContext(UserContext);
-  useEffect(() => {
-    console.log("user", user);
-  }, []);
+  const { user } = useContext(UserContext);
   return (
     <Box
       onClick={onClick}
