@@ -1,19 +1,19 @@
 import BookModal from "@/components/elements/BookModal";
 import ConfirmDialog from "@/components/elements/ConfirmDialog";
+import { SearchBook } from "@/components/elements/search";
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
 import { AddBookFormModal } from "@/components/templates/AddBookFormModal";
 import { EditBookFormModal } from "@/components/templates/EditBookFormModal";
 import { LoadingScreen } from "@/components/templates/loadingScreen/LoadingScreen";
 import { useFetch } from "@/utils/hooks/useFetch";
+import { useFilteredBooks } from "@/utils/hooks/useFilteredBooks";
 import { useRole } from "@/utils/hooks/useRole";
 import { createFetcher } from "@/utils/services/fetcher";
 import {
+  Box,
   Button,
   Container,
   HStack,
-  Input,
-  InputGroup,
-  InputLeftElement,
   Table,
   TableContainer,
   Tbody,
@@ -25,8 +25,8 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { useMemo, useState } from "react";
-import { HiMagnifyingGlass, HiPlus } from "react-icons/hi2";
+import { useEffect, useState } from "react";
+import { HiPlus } from "react-icons/hi2";
 
 export function SeeBooks() {
   useRole("ADMIN");
@@ -34,8 +34,26 @@ export function SeeBooks() {
 
   const [refreshSignal, setRefreshSignal] = useState(false);
 
-  const { data, isLoading } = useFetch("/books", refreshSignal);
-  const books = useMemo(() => data?.data?.books?.reverse() || [], [data]);
+  const { data: booksData, isLoading } = useFetch("/books", refreshSignal);
+  // const books = useMemo(() => data?.data?.books?.reverse() || [], [data]);
+
+  const [books, setBooks] = useState([]);
+  useEffect(() => {
+    if (!booksData?.data?.books) return;
+    setBooks(booksData.data.books.reverse());
+  }, [booksData]);
+
+  // filters
+  const [searchFilter, setSearchFilter] = useState("");
+  const [availibilityFilter, setAvailibilityFilter] = useState("ShowAll");
+  const [genreFilter, setGenreFilter] = useState("All Genres");
+
+  const filteredBooks = useFilteredBooks(
+    books,
+    searchFilter,
+    availibilityFilter,
+    genreFilter,
+  );
 
   const [selectedBook, setSelectedBook] = useState();
 
@@ -76,13 +94,17 @@ export function SeeBooks() {
             <Text as="h1" fontSize="2xl" fontWeight="bold">
               Books
             </Text>
-            <HStack w="full" maxW="500px">
-              <InputGroup>
-                <InputLeftElement pointerEvents="none">
-                  <HiMagnifyingGlass />
-                </InputLeftElement>
-                <Input type="text" placeholder="Search..." />
-              </InputGroup>
+            <HStack w="full" maxW="800px">
+              <Box flex={1}>
+                <SearchBook
+                  searchValue={searchFilter}
+                  setSearchValue={setSearchFilter}
+                  availibilityValue={availibilityFilter}
+                  setAvailibilityValue={setAvailibilityFilter}
+                  genreValue={genreFilter}
+                  setGenreValue={setGenreFilter}
+                />
+              </Box>
               <Button
                 leftIcon={<HiPlus />}
                 colorScheme="blue"
@@ -112,7 +134,7 @@ export function SeeBooks() {
                 </Tr>
               </Thead>
               <Tbody>
-                {books.map((book) => (
+                {filteredBooks.map((book) => (
                   <Tr key={book._id}>
                     <Td>{book.title}</Td>
                     <Td>{book.author}</Td>

@@ -1,9 +1,9 @@
 import ImageKit from "imagekit";
 
 const imagekit = new ImageKit({
-  publicKey: "public_CW/wIximcwh/LkGadhJrK9LUgZg=",
-  privateKey: "private_kS7hBwrl5EMFOWhfYqiR74n0kLk=",
-  urlEndpoint: "https://ik.imagekit.io/lutfiandri",
+  publicKey: import.meta.env.VITE_IMAGEKIT_PUBLIC_KEY,
+  privateKey: import.meta.env.VITE_IMAGEKIT_PRIVATE_KEY,
+  urlEndpoint: import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT,
 });
 
 export const uploadImage = async (file, prefixName = "tetilib") => {
