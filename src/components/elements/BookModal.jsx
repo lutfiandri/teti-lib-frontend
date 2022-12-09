@@ -1,3 +1,5 @@
+import UserContext from "@/contexts/userContext";
+import { borrowBookHandler, returnBookHandler } from "@/utils/services/borrows";
 import {
   Button,
   HStack,
@@ -11,17 +13,38 @@ import {
   ModalOverlay,
   Tag,
   Text,
+  useToast,
 } from "@chakra-ui/react";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router";
+import { LoadingScreen } from "../templates/loadingScreen/LoadingScreen";
+import { RenderIf } from "./RenderIf";
 
 const BookModal = ({
   isOpen,
   onClose,
   bookOpened,
-  actionButtonText,
-  actionButtonHandler,
+  showActionButton = false,
+  books,
+  setBooks,
 }) => {
+  const navigate = useNavigate();
+  const toast = useToast();
+  const { user, setUser } = useContext(UserContext);
+  const [isBorrowLoading, setIsBorrowLoading] = useState(false);
+  const [isReturnLoading, setIsReturnLoading] = useState(false);
+
   return (
-    <div>
+    <>
+      <LoadingScreen
+        when={isBorrowLoading}
+        text={`Borrowing ${bookOpened?.title}`}
+      />
+      <LoadingScreen
+        when={isReturnLoading}
+        text={`Returning ${bookOpened?.title}`}
+      />
+
       <Modal
         isOpen={isOpen}
         onClose={onClose}
@@ -46,9 +69,13 @@ const BookModal = ({
               {bookOpened?.author} • {bookOpened?.publisher}
             </Text>
             <HStack mt={3} mb={1}>
-              {bookOpened?.isFiction && <Tag size="sm">Fiction</Tag>}
+              {
+                <Tag size="sm" textTransform="capitalize">
+                  {bookOpened?.isFiction ? "Fiction" : "Non Fiction"}
+                </Tag>
+              }
               {bookOpened?.genres?.map((genre, index) => (
-                <Tag size="sm" key={index}>
+                <Tag size="sm" key={index} textTransform="capitalize">
                   {genre}
                 </Tag>
               ))}
@@ -58,17 +85,71 @@ const BookModal = ({
           </ModalBody>
 
           <ModalFooter justifyContent="center">
-            <Button
-              colorScheme="teal"
-              width="100%"
-              onClick={actionButtonHandler}
-            >
-              {actionButtonText}
-            </Button>
+            <RenderIf when={showActionButton && user && user.role === "USER"}>
+              <RenderIf
+                when={!user?.borrowedBookIds?.includes(bookOpened?._id)}
+              >
+                <Button
+                  colorScheme="blue"
+                  width="100%"
+                  onClick={async () => {
+                    setIsBorrowLoading(true);
+                    await borrowBookHandler(
+                      bookOpened,
+                      toast,
+                      onClose,
+                      books,
+                      setBooks,
+                      user,
+                      setUser,
+                    );
+                    setIsBorrowLoading(false);
+                  }}
+                >
+                  Borrow
+                </Button>
+              </RenderIf>
+              <RenderIf when={user?.borrowedBookIds?.includes(bookOpened?._id)}>
+                <HStack w="full">
+                  <Button
+                    colorScheme="blue"
+                    flex={1}
+                    variant="outline"
+                    onClick={async () => {
+                      setIsReturnLoading(true);
+                      await returnBookHandler(
+                        bookOpened,
+                        toast,
+                        onClose,
+                        books,
+                        setBooks,
+                        user,
+                        setUser,
+                      );
+                      setIsReturnLoading(false);
+                    }}
+                  >
+                    Return
+                  </Button>
+                  <Button colorScheme="blue" flex={2}>
+                    Read
+                  </Button>
+                </HStack>
+              </RenderIf>
+            </RenderIf>
+            <RenderIf when={!user}>
+              <Button
+                colorScheme="blue"
+                width="100%"
+                onClick={() => navigate("/signin")}
+              >
+                SignIn to borrow book ➜
+              </Button>
+            </RenderIf>
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </div>
+    </>
   );
 };
 

@@ -1,27 +1,17 @@
-import { DefaultLayout } from "@/components/layouts/DefaultLayout";
-import {
-  Box,
-  useDisclosure,
-  Container,
-  HStack,
-  Input,
-  useToast,
-} from "@chakra-ui/react";
-
-import React, { useContext, useMemo, useState } from "react";
-
-import { useFetch } from "@/utils/hooks/useFetch";
-import FilterBook from "@/components/elements/Filterbook";
 import BookList from "@/components/elements/BookList";
 import BookModal from "@/components/elements/BookModal";
+import FilterBook from "@/components/elements/Filterbook";
+import { DefaultLayout } from "@/components/layouts/DefaultLayout";
+import { LoadingScreen } from "@/components/templates/loadingScreen/LoadingScreen";
 import UserContext from "@/contexts/userContext";
+import { useFetch } from "@/utils/hooks/useFetch";
 import { useRole } from "@/utils/hooks/useRole";
-import { createFetcher } from "@/utils/services/fetcher";
+import { Box, Container, HStack, Input, useDisclosure } from "@chakra-ui/react";
+import { useContext, useEffect, useMemo, useState } from "react";
 
 export function MyBooks() {
   useRole("USER");
 
-  const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user } = useContext(UserContext);
 
@@ -30,37 +20,15 @@ export function MyBooks() {
 
   const { error, isLoading, data: booksData } = useFetch("/books");
 
-  const books = useMemo(() => booksData?.data?.books || [], [booksData]);
-
-  const returnBookHandler = async (book) => {
-    try {
-      const fetcher = createFetcher();
-
-      const res = await fetcher.put("/borrows/return", { bookId: book._id });
-      toast({
-        title: "Returned",
-        description: "Book successfully returned.",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-
-      // TODO: re fetch after returning
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Error Happened",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-      console.error(error);
-    }
-  };
+  const [books, setBooks] = useState([]);
+  useEffect(() => {
+    if (!booksData?.data?.books) return;
+    setBooks(booksData.data.books.reverse());
+  }, [booksData]);
 
   const filteredBooks = useMemo(() => {
     return books
-      .filter((book) => book.borrowerIds.includes(user.id))
+      .filter((book) => book.borrowerIds.includes(user?.id))
       .filter((books) => {
         if (query === "") {
           return true;
@@ -76,35 +44,40 @@ export function MyBooks() {
   }, [user, books]);
 
   return (
-    <DefaultLayout>
-      <Box bg="gray.100" w="100%">
-        <Container maxWidth="6xl" p={5}>
-          <HStack>
-            <Input
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search"
-              borderColor="blue.600"
-            />
-            <FilterBook />
-          </HStack>
-          <BookList
-            error={error}
-            isLoading={isLoading}
-            books={filteredBooks}
-            onOpen={onOpen}
-            setBookOpened={setBookOpened}
-          >
-            {" "}
-          </BookList>
-        </Container>
-      </Box>
-      <BookModal
-        isOpen={isOpen}
-        onClose={onClose}
-        bookOpened={bookOpened}
-        actionButtonText="Return"
-        actionButtonHandler={async () => await returnBookHandler(bookOpened)}
-      ></BookModal>
-    </DefaultLayout>
+    <>
+      <LoadingScreen when={isLoading} text="Getting Books" />
+
+      <DefaultLayout>
+        <Box bg="gray.100" w="100%">
+          <Container maxWidth="6xl" p={5}>
+            <HStack>
+              <Input
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Search"
+                borderColor="blue.600"
+              />
+              <FilterBook />
+            </HStack>
+            <BookList
+              error={error}
+              isLoading={isLoading}
+              books={filteredBooks}
+              onOpen={onOpen}
+              setBookOpened={setBookOpened}
+            >
+              {" "}
+            </BookList>
+          </Container>
+        </Box>
+        <BookModal
+          isOpen={isOpen}
+          onClose={onClose}
+          bookOpened={bookOpened}
+          showActionButton
+          books={books}
+          setBooks={setBooks}
+        />
+      </DefaultLayout>
+    </>
   );
 }

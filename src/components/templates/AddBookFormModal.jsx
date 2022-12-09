@@ -1,25 +1,26 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Button,
-  Stack,
-  Center,
-  useToast,
-} from "@chakra-ui/react";
-import { useRef, useState } from "react";
-import {
   DecimalNumberInput,
   SelectOptionInput,
   TextAreaInput,
   TextInput,
 } from "@/components/elements/Input";
-import { ImageUpload } from "../elements/ImageUpload";
 import { createFetcher } from "@/utils/services/fetcher";
+import {
+  Button,
+  Center,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Stack,
+  useToast,
+} from "@chakra-ui/react";
+import { useRef, useState } from "react";
+import { ImageUpload } from "../elements/ImageUpload";
+import { LoadingScreen } from "./loadingScreen/LoadingScreen";
 
 export function AddBookFormModal({ isOpen, onClose, setRefreshSignal }) {
   const formRef = useRef();
@@ -99,53 +100,59 @@ export function AddBookFormModal({ isOpen, onClose, setRefreshSignal }) {
   };
 
   return (
-    <Modal
-      onClose={onClose}
-      isOpen={isOpen}
-      isCentered
-      size="4xl"
-      scrollBehavior="inside"
-      closeOnOverlayClick={false}
-    >
-      <ModalOverlay bg="blackAlpha.50" backdropFilter="blur(2px)" />
-      <ModalContent>
-        <ModalHeader>Add Book</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Stack spacing={4} direction={{ base: "column-reverse", md: "row" }}>
-            <Center flex={2} py={{ base: 0, md: 8 }}>
-              <ImageUpload
-                setIsImageLoading={setIsImageLoading}
-                setImageUrl={setImageUrl}
-              />
-            </Center>
-            <Stack flex={3} as="form" spacing={4} ref={formRef}>
-              <TextInput title="Title" name="title" />
-              <TextAreaInput title="Synopsis" name="synopsis" />
-              <TextInput title="Author" name="author" />
-              <TextInput title="Publisher" name="publisher" />
-              <DecimalNumberInput title="Count" name="count" />
-              <TextInput title="Genres" name="genres" />
-              <SelectOptionInput
-                title="Fiction/Non-Fiction"
-                name="isFiction"
-                options={["Fiction", "Non-Fiction"]}
-              />
+    <>
+      <LoadingScreen when={isLoading} text="Adding new book" />
+      <Modal
+        onClose={onClose}
+        isOpen={isOpen}
+        isCentered
+        size="4xl"
+        scrollBehavior="inside"
+        closeOnOverlayClick={false}
+      >
+        <ModalOverlay bg="blackAlpha.50" backdropFilter="blur(2px)" />
+        <ModalContent>
+          <ModalHeader>Add Book</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Stack
+              spacing={4}
+              direction={{ base: "column-reverse", md: "row" }}
+            >
+              <Center flex={2} py={{ base: 0, md: 8 }}>
+                <ImageUpload
+                  setIsImageLoading={setIsImageLoading}
+                  setImageUrl={setImageUrl}
+                />
+              </Center>
+              <Stack flex={3} as="form" spacing={4} ref={formRef}>
+                <TextInput title="Title" name="title" />
+                <TextAreaInput title="Synopsis" name="synopsis" />
+                <TextInput title="Author" name="author" />
+                <TextInput title="Publisher" name="publisher" />
+                <DecimalNumberInput title="Count" name="count" />
+                <TextInput title="Genres" name="genres" />
+                <SelectOptionInput
+                  title="Fiction/Non-Fiction"
+                  name="isFiction"
+                  options={["Fiction", "Non-Fiction"]}
+                />
+              </Stack>
             </Stack>
-          </Stack>
-        </ModalBody>
+          </ModalBody>
 
-        <ModalFooter>
-          <Button
-            colorScheme="blue"
-            w="full"
-            onClick={addBookHandler}
-            disabled={isImageLoading || isLoading}
-          >
-            Add this book
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+          <ModalFooter>
+            <Button
+              colorScheme="blue"
+              w="full"
+              onClick={addBookHandler}
+              disabled={isImageLoading || isLoading}
+            >
+              Add this book
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   );
 }

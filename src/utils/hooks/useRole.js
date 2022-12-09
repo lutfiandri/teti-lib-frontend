@@ -11,7 +11,8 @@ export const useRole = (role = "USER", redirectEndpointFallback = "/") => {
   const { user, setUser } = useContext(UserContext);
 
   const redirectIfNeeded = (user) => {
-    if (user.role !== role || !user)
+    if (!role) return;
+    if (user?.role !== role || !user)
       navigate(redirectEndpointFallback, { replace: true });
   };
 
@@ -19,6 +20,7 @@ export const useRole = (role = "USER", redirectEndpointFallback = "/") => {
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) {
       redirectIfNeeded();
+      return;
     }
 
     const payloadB64 = accessToken.split(".")[1];
@@ -33,30 +35,25 @@ export const useRole = (role = "USER", redirectEndpointFallback = "/") => {
       redirectIfNeeded();
     }
 
-    // get user info
-    if (user) {
-      redirectIfNeeded(user);
-    } else {
-      (async function () {
-        try {
-          const fetcher = createFetcher();
-          const res = await fetcher.get("/users/" + payload.id);
-          const user = res.data.data.user;
+    (async function () {
+      try {
+        const fetcher = createFetcher();
+        const res = await fetcher.get("/users/" + payload.id);
+        const user = res.data.data.user;
 
-          redirectIfNeeded(user);
+        redirectIfNeeded(user);
 
-          setUser({
-            id: user._id,
-            email: user.email,
-            name: user.name,
-            role: user.role,
-            borrowedBookIds: user.borrowedBookIds,
-          });
-        } catch (error) {
-          setUser(null);
-          redirectIfNeeded();
-        }
-      })();
-    }
+        setUser({
+          id: user._id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+          borrowedBookIds: user.borrowedBookIds,
+        });
+      } catch (error) {
+        // setUser(null);
+        redirectIfNeeded();
+      }
+    })();
   }, []);
 };

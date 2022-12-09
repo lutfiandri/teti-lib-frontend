@@ -1,9 +1,9 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Home } from "@/pages/Home";
+import { SeeBooks } from "@/pages/admin";
 import { SignIn, SignUp } from "@/pages/auth";
 import { ErrorPage } from "@/pages/Error";
-import { SeeBooks } from "@/pages/admin";
+import { Home } from "@/pages/Home";
 import { MyBooks } from "@/pages/MyBooks";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
