@@ -11,6 +11,7 @@ export const useRole = (role = "USER", redirectEndpointFallback = "/") => {
   const { user, setUser } = useContext(UserContext);
 
   const redirectIfNeeded = (user) => {
+    if (!role) return;
     if (user?.role !== role || !user)
       navigate(redirectEndpointFallback, { replace: true });
   };
@@ -34,33 +35,25 @@ export const useRole = (role = "USER", redirectEndpointFallback = "/") => {
       redirectIfNeeded();
     }
 
-    // get user info
-    if (user) {
-      redirectIfNeeded(user);
-      return;
-    } else {
-      (async function () {
-        try {
-          const fetcher = createFetcher();
-          const res = await fetcher.get("/users/" + payload.id);
-          const user = res.data.data.user;
+    (async function () {
+      try {
+        const fetcher = createFetcher();
+        const res = await fetcher.get("/users/" + payload.id);
+        const user = res.data.data.user;
 
-          redirectIfNeeded(user);
-          return;
+        redirectIfNeeded(user);
 
-          setUser({
-            id: user._id,
-            email: user.email,
-            name: user.name,
-            role: user.role,
-            borrowedBookIds: user.borrowedBookIds,
-          });
-        } catch (error) {
-          setUser(null);
-          redirectIfNeeded();
-          return;
-        }
-      })();
-    }
+        setUser({
+          id: user._id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+          borrowedBookIds: user.borrowedBookIds,
+        });
+      } catch (error) {
+        // setUser(null);
+        redirectIfNeeded();
+      }
+    })();
   }, []);
 };
