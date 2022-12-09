@@ -1,12 +1,13 @@
 import BookList from "@/components/elements/BookList";
 import BookModal from "@/components/elements/BookModal";
+import { RenderIf } from "@/components/elements/RenderIf";
 import { SearchBook } from "@/components/elements/search";
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
 import { LoadingScreen } from "@/components/templates/loadingScreen/LoadingScreen";
 import { useFetch } from "@/utils/hooks/useFetch";
 import { useFilteredBooks } from "@/utils/hooks/useFilteredBooks";
 import { useRole } from "@/utils/hooks/useRole";
-import { Box, Container, useDisclosure } from "@chakra-ui/react";
+import { Box, Container, HStack, Text, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 export function Home() {
@@ -41,6 +42,9 @@ export function Home() {
       <DefaultLayout>
         <Box bg="gray.100" w="100%">
           <Container maxWidth="8xl" py={5}>
+            <Text as="h1" fontSize="2xl" mb={4}>
+              Need some books? Here we go...
+            </Text>
             <SearchBook
               searchValue={searchFilter}
               setSearchValue={setSearchFilter}
@@ -55,9 +59,15 @@ export function Home() {
               books={filteredBooks}
               onOpen={onOpen}
               setBookOpened={setBookOpened}
-            >
-              {" "}
-            </BookList>
+            />
+
+            <RenderIf when={filteredBooks?.length === 0}>
+              <HStack spacing="4px" mt={8} w="full" justifyContent="center">
+                <Text textAlign="center">
+                  No books yet here, ask admin to add books.
+                </Text>
+              </HStack>
+            </RenderIf>
           </Container>
         </Box>
       </DefaultLayout>
