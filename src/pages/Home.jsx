@@ -5,7 +5,16 @@ import { DefaultLayout } from "@/components/layouts/DefaultLayout";
 import { LoadingScreen } from "@/components/templates/loadingScreen/LoadingScreen";
 import { useFetch } from "@/utils/hooks/useFetch";
 import { useRole } from "@/utils/hooks/useRole";
-import { Box, Container, HStack, Input, useDisclosure } from "@chakra-ui/react";
+import { Search2Icon } from "@chakra-ui/icons";
+import {
+  Box,
+  Container,
+  HStack,
+  Input,
+  InputGroup,
+  InputRightElement,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 
 export function Home() {
@@ -47,11 +56,24 @@ export function Home() {
         <Box bg="gray.100" w="100%">
           <Container maxWidth="8xl" py={5}>
             <HStack>
-              <Input
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search"
-                borderColor="blue.600"
-              />
+              <InputGroup>
+                <Input
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder="Search"
+                  borderColor="blue.600"
+                  m={2}
+                />
+                <InputRightElement pointerEvents="none">
+                  <Search2Icon
+                    pointerEvents="none"
+                    w={6}
+                    h={8}
+                    mt={4}
+                    mr={4}
+                    color="gray.300"
+                  />
+                </InputRightElement>
+              </InputGroup>
               <FilterBook />
             </HStack>
             <BookList
