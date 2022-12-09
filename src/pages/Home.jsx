@@ -1,6 +1,5 @@
 import BookList from "@/components/elements/BookList";
 import BookModal from "@/components/elements/BookModal";
-import FilterBook from "@/components/elements/Filterbook";
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
 import { LoadingScreen } from "@/components/templates/loadingScreen/LoadingScreen";
 import { useFetch } from "@/utils/hooks/useFetch";
@@ -8,11 +7,18 @@ import { useRole } from "@/utils/hooks/useRole";
 import { Search2Icon } from "@chakra-ui/icons";
 import {
   Box,
+  Button,
   Container,
   HStack,
   Input,
   InputGroup,
   InputRightElement,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItemOption,
+  MenuList,
+  MenuOptionGroup,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
@@ -24,6 +30,8 @@ export function Home() {
 
   const [bookOpened, setBookOpened] = useState({});
   const [query, setQuery] = useState("");
+  const [availibilityFilter, setAvailibilityFilter] = useState("ShowAll");
+  const [genreFilter, setGenreFilter] = useState("All Genres");
 
   const { error, isLoading, data: booksData } = useFetch("/books");
 
@@ -34,19 +42,36 @@ export function Home() {
   }, [booksData]);
 
   const filteredBooks = useMemo(() => {
-    return books.filter((books) => {
-      if (query === "") {
-        return true;
-      } else if (
-        books.title.toLowerCase().includes(query.toLowerCase()) ||
-        books.author.toLowerCase().includes(query.toLowerCase()) ||
-        books.publisher.toLowerCase().includes(query.toLowerCase())
-      ) {
-        return true;
-      }
-      return false;
-    });
-  }, [books, query]);
+    return books
+      .filter((book) => {
+        if (query === "") {
+          return true;
+        } else if (
+          book.title.toLowerCase().includes(query.toLowerCase()) ||
+          book.author.toLowerCase().includes(query.toLowerCase()) ||
+          book.publisher.toLowerCase().includes(query.toLowerCase())
+        ) {
+          return true;
+        }
+        // return false;
+      })
+      .filter((book) => {
+        if (availibilityFilter === "ShowAll") {
+          return true;
+        } else if (availibilityFilter === "ShowAvailable") {
+          return book.numOfAvailableBooks > 0;
+        }
+      })
+      .filter((book) => {
+        if (genreFilter === "All Genres") {
+          return true;
+        } else if (genreFilter === "Fiction") {
+          return book.isFiction;
+        } else if (genreFilter === "nonFiction") {
+          return !book.isFiction;
+        }
+      });
+  }, [books, query, availibilityFilter, genreFilter]);
 
   return (
     <>
@@ -74,7 +99,44 @@ export function Home() {
                   />
                 </InputRightElement>
               </InputGroup>
-              <FilterBook />
+              {/* <FilterBook /> */}
+              <Box>
+                <Menu closeOnSelect={false}>
+                  <MenuButton as={Button} colorScheme="blue" m={2}>
+                    Filter
+                  </MenuButton>
+                  <MenuList minWidth="240px">
+                    <MenuOptionGroup
+                      onChange={setAvailibilityFilter}
+                      value={availibilityFilter}
+                      defaultValue="ShowAll"
+                      title="Availability"
+                      type="radio"
+                    >
+                      <MenuItemOption value="ShowAll">Show All</MenuItemOption>
+                      <MenuItemOption value="ShowAvailable">
+                        Show Available
+                      </MenuItemOption>
+                    </MenuOptionGroup>
+                    <MenuDivider />
+                    <MenuOptionGroup
+                      onChange={setGenreFilter}
+                      value={genreFilter}
+                      defaultValue="All Genres"
+                      title="Genre"
+                      type="radio"
+                    >
+                      <MenuItemOption value="All Genres">
+                        All Genres
+                      </MenuItemOption>
+                      <MenuItemOption value="Fiction">Fiction</MenuItemOption>
+                      <MenuItemOption value="nonFiction">
+                        Non Fiction
+                      </MenuItemOption>
+                    </MenuOptionGroup>
+                  </MenuList>
+                </Menu>
+              </Box>
             </HStack>
             <BookList
               error={error}
