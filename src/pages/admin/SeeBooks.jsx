@@ -6,7 +6,6 @@ import { EditBookFormModal } from "@/components/templates/EditBookFormModal";
 import { LoadingScreen } from "@/components/templates/loadingScreen/LoadingScreen";
 import { useFetch } from "@/utils/hooks/useFetch";
 import { useRole } from "@/utils/hooks/useRole";
-import { createFetcher } from "@/utils/services/fetcher";
 import {
   Button,
   Container,
@@ -160,53 +159,53 @@ export function SeeBooks() {
             </Table>
           </TableContainer>
         </Container>
-
-        <AddBookFormModal
-          isOpen={isAddBookOpen}
-          onClose={onAddBookClose}
-          setRefreshSignal={setRefreshSignal}
-        />
-
-        <EditBookFormModal
-          isOpen={isEditBookOpen}
-          onClose={onEditBookClose}
-          setRefreshSignal={setRefreshSignal}
-          initialBook={selectedBook}
-        />
-
-        <BookModal
-          isOpen={isDetailBookOpen}
-          onClose={onDetailBookClose}
-          bookOpened={selectedBook}
-        ></BookModal>
-
-        <ConfirmDialog
-          title="Warning"
-          subtitle={`Remove ${selectedBook?.title}?`}
-          actionButtonText="Delete"
-          isOpen={isDeleteBookOpen}
-          onClose={onDeleteBookClose}
-          onActionClick={async () => {
-            try {
-              setIsDeleteLoading(true);
-              const fetcher = createFetcher();
-              await fetcher.delete("/books/" + selectedBook._id);
-              setRefreshSignal((s) => !s);
-              toast({
-                title: "Success",
-                description: `${selectedBook.title} deleted`,
-                status: "success",
-                duration: 3000,
-                isClosable: false,
-              });
-            } catch (error) {
-              console.error("Error when deleting", error);
-            } finally {
-              setIsDeleteLoading(false);
-            }
-          }}
-        />
       </DefaultLayout>
+
+      <AddBookFormModal
+        isOpen={isAddBookOpen}
+        onClose={onAddBookClose}
+        setRefreshSignal={setRefreshSignal}
+      />
+
+      <EditBookFormModal
+        isOpen={isEditBookOpen}
+        onClose={onEditBookClose}
+        setRefreshSignal={setRefreshSignal}
+        initialBook={selectedBook}
+      />
+
+      <BookModal
+        isOpen={isDetailBookOpen}
+        onClose={onDetailBookClose}
+        bookOpened={selectedBook}
+      ></BookModal>
+
+      <ConfirmDialog
+        title="Warning"
+        subtitle={`Remove ${selectedBook?.title}?`}
+        actionButtonText="Delete"
+        isOpen={isDeleteBookOpen}
+        onClose={onDeleteBookClose}
+        onActionClick={async () => {
+          try {
+            setIsDeleteLoading(true);
+            const fetcher = createFetcher();
+            await fetcher.delete("/books/" + selectedBook._id);
+            setRefreshSignal((s) => !s);
+            toast({
+              title: "Success",
+              description: `${selectedBook.title} deleted`,
+              status: "success",
+              duration: 3000,
+              isClosable: false,
+            });
+          } catch (error) {
+            console.error("Error when deleting", error);
+          } finally {
+            setIsDeleteLoading(false);
+          }
+        }}
+      />
     </>
   );
 }

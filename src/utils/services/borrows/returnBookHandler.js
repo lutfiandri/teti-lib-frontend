@@ -36,7 +36,8 @@ export const returnBookHandler = async (
     newBooks[newBookIndex].numOfAvailableBooks += 1;
     newBooks[newBookIndex].borrowerIds = newBooks[
       newBookIndex
-    ].borrowerIds.filter((borrowerId) => borrowerId !== user._id);
+    ].borrowerIds.filter((borrowerId) => borrowerId !== user.id);
+    console.log("new books", newBooks[newBookIndex].borrowerIds);
     setBooks(newBooks);
   } catch (error) {
     toast({
