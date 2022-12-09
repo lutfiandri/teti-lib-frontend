@@ -15,6 +15,7 @@
 - Slide Presentasi: [Click Here](https://www.canva.com/design/DAFSQCxxR6Q/3yai7zDDPaF2WBaAPU3OfA/view?utm_content=DAFSQCxxR6Q&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink#1)
 - Front End: https://teti-library.vercel.app/
 - Back End: https://teti-lib.vercel.app/
+- Postman Docs: [Click Here](https://documenter.getpostman.com/view/23529898/2s8YzS1iXv)
 
 ## Development Setup
 
