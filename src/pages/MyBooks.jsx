@@ -40,7 +40,6 @@ export function MyBooks() {
   const [genreFilter, setGenreFilter] = useState("All Genres");
 
   const filteredUserBooks = useMemo(() => {
-    console.log("books", books);
     return books.filter((book) => book.borrowerIds.includes(user?.id));
   }, [books, user]);
 

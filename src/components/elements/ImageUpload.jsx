@@ -1,9 +1,9 @@
+import { uploadImage } from "@/utils/services/imagekit/uploadImage";
 import { Button, Center, Image, Text, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import { HiOutlinePhoto, HiTrash } from "react-icons/hi2";
-import { RenderIf } from "./RenderIf";
 import { useFileUpload } from "use-file-upload";
-import { uploadImage } from "@/utils/services/imagekit/uploadImage";
+import { RenderIf } from "./RenderIf";
 
 export function ImageUpload({
   setIsImageLoading,
@@ -38,7 +38,6 @@ export function ImageUpload({
               setUrl(image.source);
               uploadImage(image.file).then((url) => {
                 setImageUrl(url);
-                console.log("image uploaded with url:", url);
                 setIsImageLoading(false);
               });
             });
