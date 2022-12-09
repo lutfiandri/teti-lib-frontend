@@ -1,25 +1,26 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Button,
-  Stack,
-  Center,
-  useToast,
-} from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
-import {
   DecimalNumberInput,
   SelectOptionInput,
   TextAreaInput,
   TextInput,
 } from "@/components/elements/Input";
-import { ImageUpload } from "../elements/ImageUpload";
 import { createFetcher } from "@/utils/services/fetcher";
+import {
+  Button,
+  Center,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Stack,
+  useToast,
+} from "@chakra-ui/react";
+import { useEffect, useRef, useState } from "react";
+import { ImageUpload } from "../elements/ImageUpload";
+import { LoadingScreen } from "./loadingScreen/LoadingScreen";
 
 export function EditBookFormModal({
   initialBook,
@@ -86,7 +87,7 @@ export function EditBookFormModal({
 
       toast({
         title: "Success",
-        description: `${book.title} added to tetilib`,
+        description: `${book.title} updated`,
         status: "success",
         duration: 5000,
         isClosable: true,
@@ -110,79 +111,85 @@ export function EditBookFormModal({
   };
 
   return (
-    <Modal
-      onClose={onClose}
-      isOpen={isOpen}
-      isCentered
-      size="4xl"
-      scrollBehavior="inside"
-      closeOnOverlayClick={false}
-    >
-      <ModalOverlay bg="blackAlpha.50" backdropFilter="blur(2px)" />
-      <ModalContent>
-        <ModalHeader>Edit Book</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Stack spacing={4} direction={{ base: "column-reverse", md: "row" }}>
-            <Center flex={2} py={{ base: 0, md: 8 }}>
-              <ImageUpload
-                initialImageUrl={initialBook?.imageUrl}
-                setIsImageLoading={setIsImageLoading}
-                setImageUrl={setImageUrl}
-              />
-            </Center>
-            <Stack flex={3} as="form" spacing={4} ref={formRef}>
-              <TextInput
-                title="Title"
-                name="title"
-                value={initialBook?.title}
-              />
-              <TextAreaInput
-                title="Synopsis"
-                name="synopsis"
-                value={initialBook?.synopsis}
-              />
-              <TextInput
-                title="Author"
-                name="author"
-                value={initialBook?.author}
-              />
-              <TextInput
-                title="Publisher"
-                name="publisher"
-                value={initialBook?.publisher}
-              />
-              <DecimalNumberInput
-                title="Count"
-                name="count"
-                value={initialBook?.numOfBooks}
-              />
-              <TextInput
-                title="Genres"
-                name="genres"
-                value={initialBook?.genres?.join(", ")}
-              />
-              <SelectOptionInput
-                title="Fiction/Non-Fiction"
-                name="isFiction"
-                value={initialBook?.isFiction ? "Fiction" : "Non-Fiction"}
-                options={["Fiction", "Non-Fiction"]}
-              />
+    <>
+      <LoadingScreen when={isLoading} text="Saving this book" />
+      <Modal
+        onClose={onClose}
+        isOpen={isOpen}
+        isCentered
+        size="4xl"
+        scrollBehavior="inside"
+        closeOnOverlayClick={false}
+      >
+        <ModalOverlay bg="blackAlpha.50" backdropFilter="blur(2px)" />
+        <ModalContent>
+          <ModalHeader>Edit Book</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Stack
+              spacing={4}
+              direction={{ base: "column-reverse", md: "row" }}
+            >
+              <Center flex={2} py={{ base: 0, md: 8 }}>
+                <ImageUpload
+                  initialImageUrl={initialBook?.imageUrl}
+                  setIsImageLoading={setIsImageLoading}
+                  setImageUrl={setImageUrl}
+                />
+              </Center>
+              <Stack flex={3} as="form" spacing={4} ref={formRef}>
+                <TextInput
+                  title="Title"
+                  name="title"
+                  value={initialBook?.title}
+                />
+                <TextAreaInput
+                  title="Synopsis"
+                  name="synopsis"
+                  value={initialBook?.synopsis}
+                />
+                <TextInput
+                  title="Author"
+                  name="author"
+                  value={initialBook?.author}
+                />
+                <TextInput
+                  title="Publisher"
+                  name="publisher"
+                  value={initialBook?.publisher}
+                />
+                <DecimalNumberInput
+                  title="Count"
+                  name="count"
+                  value={initialBook?.numOfBooks}
+                />
+                <TextInput
+                  title="Genres"
+                  name="genres"
+                  value={initialBook?.genres?.join(", ")}
+                />
+                <SelectOptionInput
+                  title="Fiction/Non-Fiction"
+                  name="isFiction"
+                  value={initialBook?.isFiction ? "Fiction" : "Non-Fiction"}
+                  options={["Fiction", "Non-Fiction"]}
+                />
+              </Stack>
             </Stack>
-          </Stack>
-        </ModalBody>
+          </ModalBody>
 
-        <ModalFooter>
-          <Button
-            colorScheme="blue"
-            w="full"
-            onClick={editBookHandler}
-            disabled={isImageLoading || isLoading}
-          >
-            Save Changes
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+          <ModalFooter>
+            <Button
+              colorScheme="blue"
+              w="full"
+              onClick={editBookHandler}
+              disabled={isImageLoading || isLoading}
+            >
+              Save Changes
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   );
 }

@@ -3,30 +3,30 @@ import ConfirmDialog from "@/components/elements/ConfirmDialog";
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
 import { AddBookFormModal } from "@/components/templates/AddBookFormModal";
 import { EditBookFormModal } from "@/components/templates/EditBookFormModal";
+import { LoadingScreen } from "@/components/templates/loadingScreen/LoadingScreen";
 import { useFetch } from "@/utils/hooks/useFetch";
 import { useRole } from "@/utils/hooks/useRole";
 import { createFetcher } from "@/utils/services/fetcher";
 import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
-  Container,
-  Text,
   Button,
+  Container,
   HStack,
   Input,
   InputGroup,
   InputLeftElement,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import { HiMagnifyingGlass, HiPlus } from "react-icons/hi2";
-import { useNavigate } from "react-router";
 
 export function SeeBooks() {
   useRole("ADMIN");
@@ -34,10 +34,12 @@ export function SeeBooks() {
 
   const [refreshSignal, setRefreshSignal] = useState(false);
 
-  const { data } = useFetch("/books", refreshSignal);
+  const { data, isLoading } = useFetch("/books", refreshSignal);
   const books = useMemo(() => data?.data?.books?.reverse() || [], [data]);
 
   const [selectedBook, setSelectedBook] = useState();
+
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
   const {
     isOpen: isAddBookOpen,
@@ -64,139 +66,147 @@ export function SeeBooks() {
   } = useDisclosure();
 
   return (
-    <DefaultLayout>
-      <Container maxW="8xl" py={8}>
-        <HStack justifyContent="space-between">
-          <Text as="h1" fontSize="2xl" fontWeight="bold">
-            Books
-          </Text>
-          <HStack w="full" maxW="500px">
-            <InputGroup>
-              <InputLeftElement pointerEvents="none">
-                <HiMagnifyingGlass />
-              </InputLeftElement>
-              <Input type="text" placeholder="Search..." />
-            </InputGroup>
-            <Button
-              leftIcon={<HiPlus />}
-              colorScheme="blue"
-              variant="solid"
-              px={8}
-              onClick={onAddBookOpen}
-            >
-              Add Book
-            </Button>
+    <>
+      <LoadingScreen when={isLoading} text="Getting Books" />
+      <LoadingScreen when={isDeleteLoading} text="Deleting the book" />
+
+      <DefaultLayout>
+        <Container maxW="8xl" py={8}>
+          <HStack justifyContent="space-between">
+            <Text as="h1" fontSize="2xl" fontWeight="bold">
+              Books
+            </Text>
+            <HStack w="full" maxW="500px">
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  <HiMagnifyingGlass />
+                </InputLeftElement>
+                <Input type="text" placeholder="Search..." />
+              </InputGroup>
+              <Button
+                leftIcon={<HiPlus />}
+                colorScheme="blue"
+                variant="solid"
+                px={8}
+                onClick={onAddBookOpen}
+              >
+                Add Book
+              </Button>
+            </HStack>
           </HStack>
-        </HStack>
-        <TableContainer
-          border="1px"
-          borderColor="gray.300"
-          p={4}
-          borderRadius="xl"
-          my={4}
-        >
-          <Table size="sm">
-            <Thead>
-              <Tr>
-                <Th>Title</Th>
-                <Th>Author</Th>
-                <Th>Publisher</Th>
-                <Th>Books Available</Th>
-                <Th>Actions</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {books.map((book) => (
-                <Tr key={book._id}>
-                  <Td>{book.title}</Td>
-                  <Td>{book.author}</Td>
-                  <Td>{book.publisher}</Td>
-                  <Td>
-                    {book.numOfAvailableBooks}/{book.numOfBooks}
-                  </Td>
-                  <Td>
-                    <HStack>
-                      <Button
-                        size="sm"
-                        colorScheme="blue"
-                        onClick={() => {
-                          onDetailBookOpen();
-                          setSelectedBook(book);
-                        }}
-                      >
-                        Detail
-                      </Button>
-                      <Button
-                        size="sm"
-                        colorScheme="green"
-                        onClick={() => {
-                          onEditBookOpen();
-                          setSelectedBook(book);
-                        }}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        size="sm"
-                        colorScheme="red"
-                        onClick={() => {
-                          onDeleteBookOpen();
-                          setSelectedBook(book);
-                        }}
-                      >
-                        Delete
-                      </Button>
-                    </HStack>
-                  </Td>
+          <TableContainer
+            border="1px"
+            borderColor="gray.300"
+            p={4}
+            borderRadius="xl"
+            my={4}
+          >
+            <Table size="sm">
+              <Thead>
+                <Tr>
+                  <Th>Title</Th>
+                  <Th>Author</Th>
+                  <Th>Publisher</Th>
+                  <Th>Books Available</Th>
+                  <Th>Actions</Th>
                 </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
-      </Container>
+              </Thead>
+              <Tbody>
+                {books.map((book) => (
+                  <Tr key={book._id}>
+                    <Td>{book.title}</Td>
+                    <Td>{book.author}</Td>
+                    <Td>{book.publisher}</Td>
+                    <Td>
+                      {book.numOfAvailableBooks}/{book.numOfBooks}
+                    </Td>
+                    <Td>
+                      <HStack>
+                        <Button
+                          size="sm"
+                          colorScheme="blue"
+                          onClick={() => {
+                            onDetailBookOpen();
+                            setSelectedBook(book);
+                          }}
+                        >
+                          Detail
+                        </Button>
+                        <Button
+                          size="sm"
+                          colorScheme="green"
+                          onClick={() => {
+                            onEditBookOpen();
+                            setSelectedBook(book);
+                          }}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          size="sm"
+                          colorScheme="red"
+                          onClick={() => {
+                            onDeleteBookOpen();
+                            setSelectedBook(book);
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </HStack>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </Container>
 
-      <AddBookFormModal
-        isOpen={isAddBookOpen}
-        onClose={onAddBookClose}
-        setRefreshSignal={setRefreshSignal}
-      />
+        <AddBookFormModal
+          isOpen={isAddBookOpen}
+          onClose={onAddBookClose}
+          setRefreshSignal={setRefreshSignal}
+        />
 
-      <EditBookFormModal
-        isOpen={isEditBookOpen}
-        onClose={onEditBookClose}
-        setRefreshSignal={setRefreshSignal}
-        initialBook={selectedBook}
-      />
+        <EditBookFormModal
+          isOpen={isEditBookOpen}
+          onClose={onEditBookClose}
+          setRefreshSignal={setRefreshSignal}
+          initialBook={selectedBook}
+        />
 
-      <BookModal
-        isOpen={isDetailBookOpen}
-        onClose={onDetailBookClose}
-        bookOpened={selectedBook}
-      ></BookModal>
+        <BookModal
+          isOpen={isDetailBookOpen}
+          onClose={onDetailBookClose}
+          bookOpened={selectedBook}
+        ></BookModal>
 
-      <ConfirmDialog
-        title="Warning"
-        subtitle={`Remove ${selectedBook?.title}?`}
-        actionButtonText="Delete"
-        isOpen={isDeleteBookOpen}
-        onClose={onDeleteBookClose}
-        onActionClick={async () => {
-          try {
-            const fetcher = createFetcher();
-            await fetcher.delete("/books/" + selectedBook._id);
-            setRefreshSignal((s) => !s);
-            toast({
-              title: "Success",
-              description: `${selectedBook.title} deleted`,
-              status: "success",
-              duration: 3000,
-              isClosable: false,
-            });
-          } catch (error) {
-            console.error("Error when deleting", error);
-          }
-        }}
-      />
-    </DefaultLayout>
+        <ConfirmDialog
+          title="Warning"
+          subtitle={`Remove ${selectedBook?.title}?`}
+          actionButtonText="Delete"
+          isOpen={isDeleteBookOpen}
+          onClose={onDeleteBookClose}
+          onActionClick={async () => {
+            try {
+              setIsDeleteLoading(true);
+              const fetcher = createFetcher();
+              await fetcher.delete("/books/" + selectedBook._id);
+              setRefreshSignal((s) => !s);
+              toast({
+                title: "Success",
+                description: `${selectedBook.title} deleted`,
+                status: "success",
+                duration: 3000,
+                isClosable: false,
+              });
+            } catch (error) {
+              console.error("Error when deleting", error);
+            } finally {
+              setIsDeleteLoading(false);
+            }
+          }}
+        />
+      </DefaultLayout>
+    </>
   );
 }

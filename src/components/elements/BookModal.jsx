@@ -15,8 +15,9 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
+import { LoadingScreen } from "../templates/loadingScreen/LoadingScreen";
 import { RenderIf } from "./RenderIf";
 
 const BookModal = ({
@@ -30,8 +31,20 @@ const BookModal = ({
   const navigate = useNavigate();
   const toast = useToast();
   const { user, setUser } = useContext(UserContext);
+  const [isBorrowLoading, setIsBorrowLoading] = useState(false);
+  const [isReturnLoading, setIsReturnLoading] = useState(false);
+
   return (
-    <div>
+    <>
+      <LoadingScreen
+        when={isBorrowLoading}
+        text={`Borrowing ${bookOpened?.title}`}
+      />
+      <LoadingScreen
+        when={isReturnLoading}
+        text={`Returning ${bookOpened?.title}`}
+      />
+
       <Modal
         isOpen={isOpen}
         onClose={onClose}
@@ -79,7 +92,8 @@ const BookModal = ({
                 <Button
                   colorScheme="blue"
                   width="100%"
-                  onClick={async () =>
+                  onClick={async () => {
+                    setIsBorrowLoading(true);
                     await borrowBookHandler(
                       bookOpened,
                       toast,
@@ -88,8 +102,9 @@ const BookModal = ({
                       setBooks,
                       user,
                       setUser,
-                    )
-                  }
+                    );
+                    setIsBorrowLoading(false);
+                  }}
                 >
                   Borrow
                 </Button>
@@ -100,7 +115,8 @@ const BookModal = ({
                     colorScheme="blue"
                     flex={1}
                     variant="outline"
-                    onClick={async () =>
+                    onClick={async () => {
+                      setIsReturnLoading(true);
                       await returnBookHandler(
                         bookOpened,
                         toast,
@@ -109,8 +125,9 @@ const BookModal = ({
                         setBooks,
                         user,
                         setUser,
-                      )
-                    }
+                      );
+                      setIsReturnLoading(false);
+                    }}
                   >
                     Return
                   </Button>
@@ -132,7 +149,7 @@ const BookModal = ({
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </div>
+    </>
   );
 };
 
