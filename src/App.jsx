@@ -1,8 +1,9 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Home } from "@/pages/Home";
+import { SeeBooks } from "@/pages/admin";
 import { SignIn, SignUp } from "@/pages/auth";
-import { CreateBook, EditBook, SeeBooks } from "@/pages/admin";
-import FilterBook from "./components/elements/Filterbook";
+import { ErrorPage } from "@/pages/Error";
+import { Home } from "@/pages/Home";
+import { MyBooks } from "@/pages/MyBooks";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
@@ -11,11 +12,12 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/admin/book" element={<SeeBooks />} />
-        <Route path="/admin/book/create" element={<CreateBook />} />
-        <Route path="/admin/book/edit" element={<EditBook />} />
-        <Route path="/filter" element={<FilterBook />} />
-        <Route path="*" element={<div>404</div>} />
+        <Route path="/my/books" element={<MyBooks />} />
+        <Route path="/admin/books" element={<SeeBooks />} />
+        <Route
+          path="*"
+          element={<ErrorPage status="404" statusCode="Page Not Found" />}
+        />
       </Routes>
     </BrowserRouter>
   );

@@ -14,7 +14,14 @@
     "prettier/prettier": "error",
     "no-console": "warn",
     "require-jsdoc": "off",
-    "no-unused-vars": "warn",
+    "no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off"
   }

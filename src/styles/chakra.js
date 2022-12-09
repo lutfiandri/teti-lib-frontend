@@ -1,5 +1,18 @@
 import { extendTheme } from "@chakra-ui/react";
 
-const breakpoints = ["0em", "48em"];
-
-export const theme = extendTheme({ breakpoints });
+export const theme = extendTheme({
+  components: {
+    Container: {
+      baseStyle: {
+        paddingX: "2rem",
+      },
+    },
+  },
+  styles: {
+    global: {
+      body: {
+        bg: "gray.100",
+      },
+    },
+  },
+});
